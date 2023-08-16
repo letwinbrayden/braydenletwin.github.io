@@ -1,57 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Your Academic Portfolio</title>
-    <style>
-        /* ... previous styles ... */
-
-        /* Animation styles for the cube */
-        .cube-container {
-            position: fixed;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: rotateCube 6s linear infinite;
-        }
-
-        .cube {
-            width: 50px;
-            height: 50px;
-            transform-style: preserve-3d;
-            transform: rotateX(45deg) rotateY(45deg);
-            animation: spinCube 6s linear infinite;
-        }
-
-        .cube-face {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background-color: #3498db;
-            opacity: 0.8;
-        }
-
-        .cube-face:nth-child(1) { transform: translateZ(25px); background-color: #e74c3c; }
-        .cube-face:nth-child(2) { transform: translateZ(-25px) rotateY(180deg); background-color: #2ecc71; }
-        .cube-face:nth-child(3) { transform: rotateY(-90deg) translateZ(25px); background-color: #f39c12; }
-        .cube-face:nth-child(4) { transform: rotateY(90deg) translateZ(25px); background-color: #9b59b6; }
-        .cube-face:nth-child(5) { transform: rotateX(90deg) translateZ(25px); background-color: #34495e; }
-        .cube-face:nth-child(6) { transform: rotateX(-90deg) translateZ(25px); background-color: #1abc9c; }
-
-        /* Animation keyframes for cube rotation */
-        @keyframes rotateCube {
-            0% { transform: translateX(-50%) rotateX(0deg) rotateY(0deg); }
-            100% { transform: translateX(-50%) rotateX(360deg) rotateY(360deg); }
-        }
-
-        /* Animation keyframes for cube spinning */
-        @keyframes spinCube {
-            0% { transform: rotateX(45deg) rotateY(45deg); }
-            100% { transform: rotateX(45deg) rotateY(45deg) rotateZ(360deg); }
-        }
-    </style>
-</head>
-    
-<head>
     <title>Brayden Letwin</title>
     <style>
         body {
@@ -138,17 +87,6 @@
                 <!-- Add more paper entries if needed -->
             </ul>
         </section>
-        
-    </div>
-    <div class="cube-container">
-        <div class="cube">
-            <div class="cube-face"></div>
-            <div class="cube-face"></div>
-            <div class="cube-face"></div>
-            <div class="cube-face"></div>
-            <div class="cube-face"></div>
-            <div class="cube-face"></div>
-        </div>
     </div>
 </body>
 </html>
