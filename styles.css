@@ -6,6 +6,11 @@ body {
     perspective: 800px;
 }
 
+.cube-container {
+    display: flex;
+    align-items: center;
+}
+
 .cube {
     width: 200px;
     height: 200px;
