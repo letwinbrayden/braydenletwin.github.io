@@ -26,8 +26,12 @@ body {
     font-weight: bold;
 }
 
-.front  { transform: translateZ(100px); }
-.back   { transform: translateZ(-100px) rotateY(180deg); }
+.front  { transform: translateZ(100px); 
+        background-color: #ff5733;
+}
+.back   { transform: translateZ(-100px) rotateY(180deg); 
+        background-color: #ff5733;
+}
 .right  { transform: rotateY(-90deg) translateZ(100px); }
 .left   { transform: rotateY(90deg) translateZ(100px); }
 .top    { transform: rotateX(90deg) translateZ(100px); }
