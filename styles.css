@@ -62,6 +62,12 @@ body {
     background-size: cover;
 }
 @keyframes spin {
-    0% { transform: rotateY(0); }
-    100% { transform: rotateY(360deg); }
+    0% { transform: rotateY(0deg); }
+    14.29% { transform: rotateY(90deg); } /* Show the right face */
+    28.57% { transform: rotateY(180deg); } /* Show the back face */
+    42.86% { transform: rotateY(270deg); } /* Show the left face */
+    57.14% { transform: rotateY(360deg); } /* Show the front face */
+    71.43% { transform: rotateX(90deg); } /* Show the top face */
+    85.71% { transform: rotateX(-90deg); } /* Show the bottom face */
+    100% { transform: rotateX(0deg); } /* Back to the starting position */
 }
