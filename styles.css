@@ -26,16 +26,35 @@ body {
     font-weight: bold;
 }
 
-.front  { transform: translateZ(100px); 
-        background-color: #ff5733;
+.front  { 
+    transform: translateZ(100px);
+    background-color: rgba(255, 87, 51, 0.7); /* Transparent orange for the front face */
 }
-.back   { transform: translateZ(-100px) rotateY(180deg); 
-        background-color: #ff5733;
+
+.back   { 
+    transform: translateZ(-100px) rotateY(180deg);
+    background-color: rgba(51, 255, 87, 0.7); /* Transparent green for the back face */
 }
-.right  { transform: rotateY(-90deg) translateZ(100px); }
-.left   { transform: rotateY(90deg) translateZ(100px); }
-.top    { transform: rotateX(90deg) translateZ(100px); }
-.bottom { transform: rotateX(-90deg) translateZ(100px); }
+
+.right  { 
+    transform: rotateY(-90deg) translateZ(100px);
+    background-color: rgba(87, 51, 255, 0.7); /* Transparent purple for the right face */
+}
+
+.left   { 
+    transform: rotateY(90deg) translateZ(100px);
+    background-color: rgba(255, 87, 51, 0.7); /* Transparent orange for the left face */
+}
+
+.top    { 
+    transform: rotateX(90deg) translateZ(100px);
+    background-color: rgba(87, 255, 51, 0.7); /* Transparent lime for the top face */
+}
+
+.bottom { 
+    transform: rotateX(-90deg) translateZ(100px);
+    background-color: rgba(255, 51, 87, 0.7); /* Transparent pink for the bottom face */
+}
 
 @keyframes spin {
     0% { transform: rotateY(0); }
