@@ -28,32 +28,38 @@ body {
 
 .front  { 
     transform: translateZ(100px);
-    background-color: #ff5733; /* Color for the front face */
+    background-image: url('image.jpeg');
+    background-size: cover;
 }
 
 .back   { 
     transform: translateZ(-100px) rotateY(180deg);
-    background-color: #33ff57; /* Color for the back face */
+    background-image: url('image.jpeg');
+    background-size: cover;
 }
 
 .right  { 
     transform: rotateY(-90deg) translateZ(100px);
-    background-color: #5733ff; /* Color for the right face */
+    background-image: url('image.jpeg');
+    background-size: cover;
 }
 
 .left   { 
     transform: rotateY(90deg) translateZ(100px);
-    background-color: #ff5733; /* Color for the left face */
+    background-image: url('image.jpeg');
+    background-size: cover;
 }
 
 .top    { 
     transform: rotateX(90deg) translateZ(100px);
-    background-color: #57ff33; /* Color for the top face */
+    background-image: url('image.jpeg');
+    background-size: cover;
 }
 
 .bottom { 
     transform: rotateX(-90deg) translateZ(100px);
-    background-color: #ff3357; /* Color for the bottom face */
+    background-image: url('image.jpeg');
+    background-size: cover;
 }
 @keyframes spin {
     0% { transform: rotateY(0); }
