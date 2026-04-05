@@ -6,14 +6,16 @@
   <title>Brayden Letwin</title>
   <style>
     :root {
-      --bg: #f8f7f4;
+      --bg: #f6f2fb;
       --paper: #ffffff;
-      --ink: #1f2937;
-      --muted: #5b6573;
-      --line: #d7dce2;
-      --accent: #1f4b6e;
-      --accent-soft: #eaf1f7;
-      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      --ink: #2b213a;
+      --muted: #5f5570;
+      --line: #ddd4ea;
+      --accent: #4b2e83;
+      --accent-soft: #efe8f8;
+      --gold: #b7a57a;
+      --gold-soft: #f6f1e7;
+      --shadow: 0 10px 30px rgba(43, 33, 58, 0.08);
       --maxw: 920px;
     }
 
@@ -50,7 +52,7 @@
     }
 
     .hero {
-      background: var(--paper);
+      background: linear-gradient(180deg, #ffffff 0%, #fdfcff 100%);
       border: 1px solid var(--line);
       border-radius: 18px;
       box-shadow: var(--shadow);
@@ -98,7 +100,7 @@
     .meta li {
       background: var(--accent-soft);
       color: var(--accent);
-      border: 1px solid #d5e1ec;
+      border: 1px solid #d8cbea;
       border-radius: 999px;
       padding: 6px 12px;
       font-size: 0.94rem;
@@ -125,7 +127,14 @@
       color: white;
     }
 
+    .button-secondary {
+      border-color: var(--gold);
+      color: var(--accent);
+      background: var(--gold-soft);
+    }
+
     .button:hover,
+    .button-secondary:hover {
     .button-secondary:hover {
       transform: translateY(-1px);
       text-decoration: none;
@@ -137,7 +146,7 @@
     }
 
     .section {
-      background: var(--paper);
+      background: linear-gradient(180deg, #ffffff 0%, #fdfcff 100%);
       border: 1px solid var(--line);
       border-radius: 18px;
       box-shadow: var(--shadow);
@@ -150,7 +159,7 @@
       font-size: 1.35rem;
       font-weight: 600;
       color: var(--accent);
-      border-bottom: 1px solid var(--line);
+      border-bottom: 1px solid var(--gold);
       padding-bottom: 10px;
     }
 
@@ -273,7 +282,7 @@
         <li class="pub">
           <div class="pub-title">On the maxima of Littlewood polynomials on [−1, 1]</div>
           <div class="pub-authors">with <a href="https://www.math.columbia.edu/~msawhney/" target="_blank" rel="noopener noreferrer">Mehtaab Sawhney</a></div>
-          <div class="pub-status"><a href="NOTES__Erdos_Problem__524.pdf" target="_blank" rel="noopener noreferrer">Preprint / notes</a></div>
+          <div class="pub-status"><a href="NOTES__Erdos_Problem__524.pdf" target="_blank" rel="noopener noreferrer">To appear on <span style="font-style: italic;">arXiv</span></a></div>
         </li>
 
         <li class="pub">
