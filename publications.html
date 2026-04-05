@@ -6,22 +6,24 @@
   <title>Publications | Brayden Letwin</title>
   <style>
     :root {
-      --bg: #faf9f7;
-      --paper: #ffffff;
-      --ink: #1f2430;
+      --bg: #f8f8f6;
+      --card: #ffffff;
+      --text: #1f2430;
       --muted: #5f6775;
       --line: #d9dde3;
       --accent: #4b2e83;
-      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-      --maxw: 920px;
+      --shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+      --max-width: 920px;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
       background: var(--bg);
-      color: var(--ink);
+      color: var(--text);
       font-family: Georgia, "Times New Roman", Times, serif;
       line-height: 1.7;
       font-size: 17px;
@@ -37,152 +39,135 @@
     }
 
     .page {
-      max-width: var(--maxw);
+      max-width: var(--max-width);
       margin: 0 auto;
-      padding: 40px 24px 72px;
+      padding: 40px 20px 60px;
     }
 
-    .topbar,
-    .section {
-      background: var(--paper);
+    .card {
+      background: var(--card);
       border: 1px solid var(--line);
-      border-radius: 18px;
+      border-radius: 16px;
       box-shadow: var(--shadow);
     }
 
-    .topbar {
-      padding: 22px 28px;
-      margin-bottom: 22px;
+    .header {
+      padding: 28px 32px;
+      margin-bottom: 24px;
     }
 
     .eyebrow {
-      font-size: 0.92rem;
       color: var(--muted);
-      margin-bottom: 4px;
+      font-size: 0.95rem;
+      margin-bottom: 6px;
     }
 
     h1 {
-      margin: 0;
-      font-size: 2.1rem;
+      margin: 0 0 10px;
+      font-size: 2.15rem;
       line-height: 1.15;
       color: var(--accent);
       font-weight: 600;
     }
 
-    .topbar p {
-      margin: 10px 0 0;
+    .header p {
+      margin: 0;
       color: var(--muted);
     }
 
-    .nav {
+    .back-link {
       margin-top: 14px;
+      display: inline-block;
     }
 
     .section {
-      padding: 30px 32px;
+      padding: 28px 32px;
     }
 
     .section h2 {
       margin: 0 0 18px;
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       color: var(--accent);
       border-bottom: 1px solid var(--line);
-      padding-bottom: 10px;
+      padding-bottom: 8px;
       font-weight: 600;
     }
 
     .pub-list {
       list-style: none;
-      padding: 0;
       margin: 0;
-      display: grid;
-      gap: 22px;
+      padding: 0;
     }
 
     .pub {
-      padding-bottom: 18px;
+      padding: 0 0 18px;
+      margin: 0 0 18px;
       border-bottom: 1px solid #e7eaee;
     }
 
     .pub:last-child {
       border-bottom: none;
+      margin-bottom: 0;
       padding-bottom: 0;
     }
 
     .pub-title {
-      font-size: 1.1rem;
+      font-size: 1.08rem;
       font-weight: 600;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
     }
 
     .pub-authors,
     .pub-venue,
     .pub-status {
       color: var(--muted);
-      font-size: 0.98rem;
     }
 
     .footer {
       text-align: center;
       color: var(--muted);
-      font-size: 0.94rem;
-      margin-top: 24px;
+      font-size: 0.95rem;
+      margin-top: 22px;
     }
 
-    @media (max-width: 760px) {
+    @media (max-width: 700px) {
       body {
         font-size: 16px;
       }
 
       .page {
-        padding: 12px 10px 28px;
+        padding: 14px 10px 30px;
       }
 
-      .topbar {
-        padding: 18px 16px;
-        border-radius: 14px;
-      }
-
+      .header,
       .section {
-        padding: 18px 16px;
-        border-radius: 14px;
+        padding: 20px 18px;
       }
 
       h1 {
-        font-size: 1.65rem;
+        font-size: 1.75rem;
       }
 
       .section h2 {
-        font-size: 1.08rem;
-        margin-bottom: 12px;
-        padding-bottom: 8px;
+        font-size: 1.1rem;
       }
 
       .pub-title {
         font-size: 1rem;
-        line-height: 1.35;
-      }
-
-      .pub-authors,
-      .pub-venue,
-      .pub-status,
-      .footer,
-      .topbar p {
-        font-size: 0.95rem;
       }
     }
   </style>
 </head>
 <body>
   <main class="page">
-    <section class="topbar">
+    <section class="card header">
       <div class="eyebrow">Brayden Letwin</div>
       <h1>Publications and Preprints</h1>
       <p>A selection of current and ongoing work.</p>
-      <div class="nav"><a href="index.html">← Back to homepage</a></div>
+      <a class="back-link" href="index.html">← Back to homepage</a>
     </section>
 
-    <section class="section">
+    <section class="card section">
       <h2>Research Papers</h2>
       <ul class="pub-list">
         <li class="pub">
@@ -194,19 +179,27 @@
         <li class="pub">
           <div class="pub-title">On the maxima of Littlewood polynomials on [−1, 1]</div>
           <div class="pub-authors">with <a href="https://www.math.columbia.edu/~msawhney/" target="_blank" rel="noopener noreferrer">Mehtaab Sawhney</a></div>
-          <div class="pub-status"><a href="NOTES__Erdos_Problem__524.pdf" target="_blank" rel="noopener noreferrer">To appear on <span style="font-style: italic;">arXiv</span></a></div>
+          <div class="pub-status">
+            <a href="NOTES__Erdos_Problem__524.pdf" target="_blank" rel="noopener noreferrer">
+              To appear on <em>arXiv</em>
+            </a>
+          </div>
         </li>
 
         <li class="pub">
           <div class="pub-title">A generalization of Grünbaum’s inequality</div>
           <div class="pub-authors">with <a href="https://www.math.ualberta.ca/~vladyaskin/" target="_blank" rel="noopener noreferrer">Vlad Yaskin</a></div>
           <div class="pub-venue">Israel Journal of Mathematics</div>
-          <div class="pub-status"><a href="https://arxiv.org/abs/2410.04741" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+          <div class="pub-status">
+            <a href="https://arxiv.org/abs/2410.04741" target="_blank" rel="noopener noreferrer">arXiv</a>
+          </div>
         </li>
       </ul>
     </section>
 
-    <p class="footer">Last updated April 2026</p>
+    <div class="footer">
+      Last updated April 2026
+    </div>
   </main>
 </body>
 </html>
