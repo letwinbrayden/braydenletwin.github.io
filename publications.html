@@ -6,26 +6,37 @@
   <title>Publications | Brayden Letwin</title>
   <style>
     :root {
-      --bg: #f8f8f6;
+      --bg: #f5f2eb;
+      --bg-2: #efe9dc;
       --card: #ffffff;
-      --text: #1f2430;
-      --muted: #5f6775;
-      --line: #d9dde3;
+      --text: #1d2430;
+      --muted: #5f6675;
+      --line: #ddd4c5;
       --accent: #4b2e83;
-      --shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
-      --max-width: 920px;
+      --accent-soft: rgba(75, 46, 131, 0.08);
+      --gold: #85754d;
+      --shadow: 0 14px 34px rgba(32, 24, 56, 0.08);
+      --max-width: 980px;
+      --radius: 22px;
     }
 
     * {
       box-sizing: border-box;
     }
 
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
+
     body {
       margin: 0;
-      background: var(--bg);
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(75, 46, 131, 0.05), transparent 28%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
       color: var(--text);
-      font-family: Georgia, "Times New Roman", Times, serif;
-      line-height: 1.7;
+      font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, "Times New Roman", serif;
+      line-height: 1.68;
       font-size: 17px;
     }
 
@@ -41,177 +52,363 @@
     .page {
       max-width: var(--max-width);
       margin: 0 auto;
-      padding: 40px 20px 60px;
+      padding: clamp(18px, 4vw, 44px) clamp(14px, 3vw, 24px) 64px;
     }
 
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 16px;
+    .hero {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.93));
+      border: 1px solid rgba(75, 46, 131, 0.12);
+      border-radius: calc(var(--radius) + 2px);
       box-shadow: var(--shadow);
-    }
-
-    .header {
-      padding: 28px 32px;
+      padding: clamp(22px, 4vw, 36px);
       margin-bottom: 24px;
     }
 
     .eyebrow {
+      margin: 0 0 10px;
       color: var(--muted);
-      font-size: 0.95rem;
-      margin-bottom: 6px;
+      font-size: 0.96rem;
+      letter-spacing: 0.02em;
     }
 
     h1 {
       margin: 0 0 10px;
-      font-size: 2.15rem;
-      line-height: 1.15;
+      font-size: clamp(2.05rem, 4vw, 3rem);
+      line-height: 1.08;
       color: var(--accent);
-      font-weight: 600;
+      font-weight: 700;
     }
 
-    .header p {
+    .intro {
       margin: 0;
+      max-width: 44rem;
       color: var(--muted);
+      font-size: 1.03rem;
     }
 
     .back-link {
-      margin-top: 14px;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(75, 46, 131, 0.14);
+      background: var(--accent-soft);
+      font-size: 0.95rem;
     }
 
-    .section {
-      padding: 28px 32px;
+    .back-link:hover {
+      text-decoration: none;
+      background: rgba(75, 46, 131, 0.12);
     }
 
-    .section h2 {
-      margin: 0 0 18px;
-      font-size: 1.25rem;
+    .listing {
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(133, 117, 77, 0.14);
+      border-radius: calc(var(--radius) + 2px);
+      padding: clamp(18px, 4vw, 30px);
+      backdrop-filter: blur(2px);
+    }
+
+    .section-heading {
+      margin-bottom: 18px;
+    }
+
+    .section-heading h2 {
+      margin: 0 0 8px;
+      font-size: 1.35rem;
       color: var(--accent);
-      border-bottom: 1px solid var(--line);
-      padding-bottom: 8px;
-      font-weight: 600;
+      font-weight: 700;
+    }
+
+    .section-heading p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.98rem;
     }
 
     .pub-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
+      display: grid;
+      gap: 18px;
     }
 
     .pub {
-      padding: 0 0 18px;
-      margin: 0 0 18px;
-      border-bottom: 1px solid #e7eaee;
-    }
-
-    .pub:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
-      padding-bottom: 0;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 26px rgba(28, 23, 42, 0.05);
+      padding: 22px 22px 18px;
     }
 
     .pub-title {
-      font-size: 1.08rem;
-      font-weight: 600;
-      margin-bottom: 4px;
+      margin: 0;
+      font-size: 1.18rem;
+      line-height: 1.3;
+      font-weight: 700;
+      text-wrap: balance;
     }
 
-    .pub-authors,
-    .pub-venue,
-    .pub-status {
+    .pub-meta {
+      display: grid;
+      gap: 4px;
+      margin-top: 10px;
       color: var(--muted);
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(75, 46, 131, 0.14);
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.84rem;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .link-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .link-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(133, 117, 77, 0.2);
+      background: #fcfbf8;
+      color: var(--text);
+      font-size: 0.94rem;
+    }
+
+    .link-pill:hover {
+      text-decoration: none;
+      border-color: rgba(75, 46, 131, 0.24);
+      background: #f7f4ed;
+    }
+
+    .abstract {
+      margin-top: 16px;
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+    }
+
+    .abstract summary {
+      list-style: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.98rem;
+      user-select: none;
+    }
+
+    .abstract summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .chevron {
+      width: 10px;
+      height: 10px;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(45deg);
+      transition: transform 0.2s ease;
+      margin-top: -2px;
+      flex: 0 0 auto;
+    }
+
+    .abstract[open] .chevron {
+      transform: rotate(225deg);
+      margin-top: 4px;
+    }
+
+    .abstract-body {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .abstract-body p {
+      margin: 0;
     }
 
     .footer {
       text-align: center;
       color: var(--muted);
       font-size: 0.95rem;
-      margin-top: 22px;
+      margin-top: 24px;
     }
 
-    @media (max-width: 700px) {
+    @media (max-width: 720px) {
       body {
         font-size: 16px;
       }
 
       .page {
-        padding: 14px 10px 30px;
+        padding: 12px 10px 36px;
       }
 
-      .header,
-      .section {
-        padding: 20px 18px;
+      .hero,
+      .listing,
+      .pub {
+        border-radius: 18px;
       }
 
-      h1 {
-        font-size: 1.75rem;
+      .hero {
+        padding: 22px 18px;
       }
 
-      .section h2 {
-        font-size: 1.1rem;
+      .listing {
+        padding: 18px 14px;
+      }
+
+      .pub {
+        padding: 18px 16px 16px;
       }
 
       .pub-title {
-        font-size: 1rem;
+        font-size: 1.05rem;
+      }
+
+      .section-heading h2 {
+        font-size: 1.15rem;
+      }
+
+      .intro,
+      .section-heading p,
+      .abstract-body {
+        font-size: 0.96rem;
+      }
+
+      .back-link,
+      .link-pill,
+      .abstract summary {
+        min-height: 42px;
       }
     }
   </style>
 </head>
 <body>
   <main class="page">
-    <section class="card header">
-      <div class="eyebrow">Brayden Letwin</div>
-      <h1>Publications and Preprints</h1>
-      <p>A selection of current and ongoing work.</p>
-      <a class="back-link" href="index.html">← Back to homepage</a>
+    <section class="hero">
+      <p class="eyebrow">Brayden Letwin</p>
+      <h1>Publications &amp; Preprints</h1>
+      <p class="intro">A selection of published work, current manuscripts, and projects in progress.</p>
+      <a class="back-link" href="index.html">&#8592; Back to homepage</a>
     </section>
 
-    <section class="card section">
-      <h2>Research Papers</h2>
-      <ul class="pub-list">
+    <section class="listing">
+      <div class="section-heading">
+        <h2>Research Papers</h2>
+        <p>Tap or click <strong>Read abstract</strong> to expand a short summary for each paper.</p>
+      </div>
 
-        <li class="pub">
-          <div class="pub-title">Almost surely half of the roots of Littlewood polynomials lie in the unit disc</div>
-          <div class="pub-status">In preparation</div>
-        </li>
-        
-        <li class="pub">
-          <div class="pub-title">How anisotropic can the sections of an isotropic convex body be?</div>
-          <div class="pub-authors">with Colin Tang</div>
-          <div class="pub-status">In preparation</div>
-        </li>
-
-        <li class="pub">
-          <div class="pub-title">A lower bound for the smallest singular value of a weighted random matrix</div>
-          <div class="pub-authors">with Achintya Raya Polavarapu</a></div>
-          <div class="pub-status">In preparation</div>
-        </li>
-        
-        <li class="pub">
-          <div class="pub-title">On the maxima of Littlewood polynomials on [−1, 1]</div>
-          <div class="pub-authors">with <a href="https://www.math.columbia.edu/~msawhney/" target="_blank" rel="noopener noreferrer">Mehtaab Sawhney</a></div>
-          <div class="pub-status">
-            <a href="NOTES__Erdos_Problem__524.pdf" target="_blank" rel="noopener noreferrer">
-              To appear on <em>arXiv</em>
-            </a>
+      <div class="pub-list">
+        <article class="pub">
+          <h3 class="pub-title">Almost surely half of the roots of Littlewood polynomials lie in the unit disc</h3>
+          <div class="pub-meta"></div>
+          <div class="badges">
+            <span class="badge">In preparation</span>
           </div>
-        </li>
+          <details class="abstract">
+            <summary><span class="chevron"></span>Read abstract</summary>
+            <div class="abstract-body">
+              <p>Add a 2-4 sentence abstract here.</p>
+            </div>
+          </details>
+        </article>
 
-        <li class="pub">
-          <div class="pub-title">A generalization of Grünbaum’s inequality</div>
-          <div class="pub-authors">with <a href="https://www.math.ualberta.ca/~vladyaskin/" target="_blank" rel="noopener noreferrer">Vlad Yaskin</a></div>
-          <div class="pub-venue">Israel Journal of Mathematics</div>
-          <div class="pub-status">
-            <a href="https://arxiv.org/abs/2410.04741" target="_blank" rel="noopener noreferrer">arXiv</a>
+        <article class="pub">
+          <h3 class="pub-title">How anisotropic can the sections of an isotropic convex body be?</h3>
+          <div class="pub-meta">
+            <div>with Colin Tang</div>
           </div>
-        </li>
-      </ul>
+          <div class="badges">
+            <span class="badge">In preparation</span>
+          </div>
+          <details class="abstract">
+            <summary><span class="chevron"></span>Read abstract</summary>
+            <div class="abstract-body">
+              <p>Add a 2-4 sentence abstract here.</p>
+            </div>
+          </details>
+        </article>
+
+        <article class="pub">
+          <h3 class="pub-title">A lower bound for the smallest singular value of a weighted random matrix</h3>
+          <div class="pub-meta">
+            <div>with Achintya Raya Polavarapu</div>
+          </div>
+          <div class="badges">
+            <span class="badge">In preparation</span>
+          </div>
+          <details class="abstract">
+            <summary><span class="chevron"></span>Read abstract</summary>
+            <div class="abstract-body">
+              <p>Add a 2-4 sentence abstract here.</p>
+            </div>
+          </details>
+        </article>
+
+        <article class="pub">
+          <h3 class="pub-title">On the maxima of Littlewood polynomials on [&#8722;1, 1]</h3>
+          <div class="pub-meta">
+            <div>with <a href="https://www.math.columbia.edu/~msawhney/" target="_blank" rel="noopener noreferrer">Mehtaab Sawhney</a></div>
+          </div>
+          <div class="badges">
+            <span class="badge">To appear on arXiv</span>
+          </div>
+          <div class="link-row">
+            <a class="link-pill" href="NOTES__Erdos_Problem__524.pdf" target="_blank" rel="noopener noreferrer">Paper / notes</a>
+          </div>
+          <details class="abstract">
+            <summary><span class="chevron"></span>Read abstract</summary>
+            <div class="abstract-body">
+              <p>Add a 2-4 sentence abstract here.</p>
+            </div>
+          </details>
+        </article>
+
+        <article class="pub">
+          <h3 class="pub-title">A generalization of Gr&uuml;nbaum&rsquo;s inequality</h3>
+          <div class="pub-meta">
+            <div>with <a href="https://www.math.ualberta.ca/~vladyaskin/" target="_blank" rel="noopener noreferrer">Vlad Yaskin</a></div>
+            <div>Israel Journal of Mathematics</div>
+          </div>
+          <div class="badges">
+            <span class="badge">Published</span>
+          </div>
+          <div class="link-row">
+            <a class="link-pill" href="https://arxiv.org/abs/2410.04741" target="_blank" rel="noopener noreferrer">arXiv</a>
+          </div>
+          <details class="abstract">
+            <summary><span class="chevron"></span>Read abstract</summary>
+            <div class="abstract-body">
+              <p>Add a 2-4 sentence abstract here, or replace this box with the journal abstract.</p>
+            </div>
+          </details>
+        </article>
+      </div>
     </section>
 
-    <div class="footer">
-      Last updated April 2026
-    </div>
+    <div class="footer">Last updated April 2026</div>
   </main>
 </body>
 </html>
