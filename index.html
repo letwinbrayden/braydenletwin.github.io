@@ -134,14 +134,8 @@
 
     .button:hover,
     .button-secondary:hover {
-    .button-secondary:hover {
       transform: translateY(-1px);
       text-decoration: none;
-    }
-
-    .button-secondary {
-      background: transparent;
-      color: var(--accent);
     }
 
     .section {
@@ -164,37 +158,6 @@
 
     .about p {
       margin: 0;
-    }
-
-    .pub-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: grid;
-      gap: 20px;
-    }
-
-    .pub {
-      padding-bottom: 18px;
-      border-bottom: 1px solid #e7eaee;
-    }
-
-    .pub:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
-
-    .pub-title {
-      font-size: 1.08rem;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .pub-authors,
-    .pub-venue,
-    .pub-status {
-      color: var(--muted);
-      font-size: 0.98rem;
     }
 
     .footer {
@@ -274,18 +237,6 @@
         padding-bottom: 8px;
       }
 
-      .pub-list {
-        gap: 16px;
-      }
-
-      .pub-title {
-        font-size: 1rem;
-        line-height: 1.35;
-      }
-
-      .pub-authors,
-      .pub-venue,
-      .pub-status,
       .about p,
       .footer {
         font-size: 0.95rem;
@@ -328,7 +279,7 @@
 
         <div class="links">
           <a class="button" href="CV.pdf" target="_blank" rel="noopener noreferrer">Curriculum Vitae</a>
-          <a class="button-secondary" href="#publications">Publications</a>
+          <a class="button-secondary" href="publications.html">Publications</a>
         </div>
       </div>
     </section>
@@ -343,28 +294,12 @@
       </p>
     </section>
 
-    <section class="section" id="publications">
-      <h2>Publications and Preprints</h2>
-      <ul class="pub-list">
-        <li class="pub">
-          <div class="pub-title">How anisotropic can the sections of an isotropic convex body be?</div>
-          <div class="pub-authors">with Colin Tang</div>
-          <div class="pub-status">In preparation</div>
-        </li>
-
-        <li class="pub">
-          <div class="pub-title">On the maxima of Littlewood polynomials on [−1, 1]</div>
-          <div class="pub-authors">with <a href="https://www.math.columbia.edu/~msawhney/" target="_blank" rel="noopener noreferrer">Mehtaab Sawhney</a></div>
-          <div class="pub-status"><a href="NOTES__Erdos_Problem__524.pdf" target="_blank" rel="noopener noreferrer">To appear on <span style="font-style: italic;">arXiv</span></a></div>
-        </li>
-
-        <li class="pub">
-          <div class="pub-title">A generalization of Grünbaum’s inequality</div>
-          <div class="pub-authors">with <a href="https://www.math.ualberta.ca/~vladyaskin/" target="_blank" rel="noopener noreferrer">Vlad Yaskin</a></div>
-          <div class="pub-venue">Israel Journal of Mathematics</div>
-          <div class="pub-status"><a href="https://arxiv.org/abs/2410.04741" target="_blank" rel="noopener noreferrer">arXiv</a></div>
-        </li>
-      </ul>
+    <section class="section" id="writing">
+      <h2>Writing</h2>
+      <p>
+        A list of publications and preprints is available on the
+        <a href="publications.html">publications page</a>.
+      </p>
     </section>
 
     <p class="footer">Last updated April 2026</p>
