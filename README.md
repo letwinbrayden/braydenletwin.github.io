@@ -1,9 +1,10 @@
 # Blog + accounts + comments for your site
 
-This package keeps your site mostly static, but adds:
+This package keeps your site visually simple, but now adds a real Supabase-backed blog system:
 
 - a blog landing page,
 - individual blog post pages,
+- a protected admin editor,
 - email/password account creation,
 - sign-in/sign-out,
 - per-post comments,
@@ -14,72 +15,32 @@ This package keeps your site mostly static, but adds:
 - `index.html` — updated home page with a blog section
 - `blog.html` — blog archive page
 - `post.html` — single post page with auth + comments
+- `admin.html` — protected blog editor page
 - `styles.css` — shared styling for all pages
-- `posts.js` — your blog post data
-- `home.js`, `blog.js`, `post.js` — page logic
+- `blog-data.js` — reads and writes blog posts from Supabase
+- `home.js`, `blog.js`, `post.js`, `admin.js` — page logic
 - `supabase-config.js` — fill in your project URL and key
-- `supabase-setup.sql` — database tables, trigger, RLS policies
-- `admin.html`, `admin.js` — protected owner-only editor page
+- `supabase-setup.sql` — database tables, trigger, and RLS policies
 
-## How to publish posts
+## What changed from the earlier version
 
-Open `posts.js` and edit the `BLOG_POSTS` array.
+Posts no longer live in `posts.js`.
 
-Each post has:
-
-- `slug` — permanent identifier for the post
-- `title`
-- `publishedAt` — in `YYYY-MM-DD`
-- `readTime`
-- `excerpt`
-- `contentHtml`
-
-After a post is live, do not change its slug unless you are okay with losing the connection to its old comments.
+They now live in the `public.posts` table in Supabase, and `admin.html` is a real browser-based editor for creating, editing, publishing, and deleting posts.
 
 ## Supabase setup
 
 1. Create a Supabase project.
-2. In the Supabase SQL Editor, run `supabase-setup.sql`.
+2. In the SQL Editor, run `supabase-setup.sql`.
 3. Open `supabase-config.js` and replace the placeholders with your project URL and anon/publishable key.
 4. In Auth settings, set your Site URL and allowed Redirect URLs to your deployed domain.
 5. Deploy the site.
 
-## Important note about email confirmations
+## Make yourself an admin
 
-If email confirmation is enabled, users will usually need to confirm their email before they can sign in the first time.
+First create your account by signing up on any blog post page after the site is live, or create the user in Supabase Auth.
 
-## Local testing
-
-Because this site uses JavaScript modules, test it through a local web server rather than opening the HTML files directly with `file://`.
-
-One simple option is:
-
-```bash
-python3 -m http.server 8000
-```
-
-Then open `http://localhost:8000` in your browser.
-
-## Replacing your current site
-
-Copy these files into the same folder as your current site assets:
-
-- keep your existing `image.jpeg`
-- keep your existing `CV.pdf`
-- keep your existing `publications.html`
-
-If you already have custom pages, merge the new navigation links into them as needed.
-
-
-## Hiding and protecting the admin page
-
-The site now includes a protected page at `admin.html`.
-
-- It is not linked from the public navigation.
-- It uses `<meta name="robots" content="noindex,nofollow">`.
-- It checks whether the signed-in user has `is_admin = true` in `public.profiles` before showing any admin content.
-
-To make your own account an admin after signing up, run:
+Then run:
 
 ```sql
 update public.profiles
@@ -87,6 +48,66 @@ set is_admin = true
 where id = 'YOUR-USER-UUID';
 ```
 
-You can find your user UUID in the Supabase Authentication users table or by querying `public.profiles`.
+You can find your UUID in:
 
-At the moment, blog posts still live in `posts.js`, so the admin page is a protected owner-only area rather than a full CMS.
+- Supabase Dashboard → Authentication → Users, or
+- the `public.profiles` table.
+
+After that, visit `admin.html`.
+
+## How to create a post
+
+1. Open `admin.html`.
+2. Sign in with your admin account.
+3. Click **New post**.
+4. Fill in title, slug, excerpt, content HTML, and optionally read time.
+5. Check **Publish this post** when ready.
+6. Save.
+
+Published posts appear automatically on:
+
+- `index.html`
+- `blog.html`
+- `post.html?slug=your-post-slug`
+
+## Notes about post content
+
+The editor currently stores the body as HTML in `content_html`.
+
+That means you can paste content like:
+
+```html
+<p>This is a paragraph.</p>
+<blockquote>A quoted remark.</blockquote>
+<ul><li>Point one</li><li>Point two</li></ul>
+```
+
+## Important note about slugs
+
+Comments are tied to the post slug. Try not to change a slug after comments exist.
+
+## Important note about email confirmations
+
+If email confirmation is enabled, users usually need to confirm their email before they can sign in the first time.
+
+## Local testing
+
+Because this site uses JavaScript modules, test it through a local web server rather than opening files directly with `file://`.
+
+Example:
+
+```bash
+python3 -m http.server 8000
+```
+
+Then open `http://localhost:8000`.
+
+## Existing files
+
+Keep your own copies of:
+
+- `image.jpeg`
+- `CV.pdf`
+- your existing publications page
+
+This package removes publications links from the updated pages, since you said you already have that page handled separately.

@@ -20,7 +20,7 @@
 
     <section class="card section page-intro">
       <div class="kicker">Editor</div>
-      <h1 style="margin-bottom: 12px;">Protected page</h1>
+      <h1 style="margin-bottom: 12px;">Protected blog editor</h1>
       <p class="muted" style="margin: 0;">
         This page is intentionally not linked publicly and only renders for signed-in admins.
       </p>
@@ -31,32 +31,70 @@
     </section>
 
     <section class="card section" id="admin-app" style="display:none;">
-      <h2>Admin tools</h2>
-      <p>
-        Your posts are currently stored in <span class="code-inline">posts.js</span>, so publishing is still a file edit rather than a database action.
-        This page exists mainly as a protected owner-only area.
-      </p>
-      <div class="auth-box">
-        <h3>Current workflow</h3>
-        <ul>
-          <li>Edit or add post objects in <span class="code-inline">posts.js</span>.</li>
-          <li>Redeploy the site after changes.</li>
-          <li>Use Supabase only for accounts and comments.</li>
-        </ul>
+      <div class="comments-header">
+        <div>
+          <h2 style="margin-bottom: 8px;">Blog posts</h2>
+          <p class="muted" id="admin-user-info" style="margin:0;"></p>
+        </div>
+        <div class="buttons" style="margin-top:0;">
+          <button class="secondary" id="new-post-button" type="button">New post</button>
+          <button class="secondary" id="admin-sign-out" type="button">Sign out</button>
+        </div>
       </div>
-      <div class="auth-box">
-        <h3>Account status</h3>
-        <p class="muted" id="admin-user-info" style="margin-bottom:0;"></p>
-      </div>
-      <div class="buttons">
-        <a class="button" href="blog.html">View blog</a>
-        <button class="secondary" id="admin-sign-out" type="button">Sign out</button>
+
+      <div id="admin-notices"></div>
+
+      <div class="admin-layout">
+        <section class="auth-box">
+          <h3 style="margin-bottom:14px;">Posts</h3>
+          <div id="admin-post-list" class="grid"></div>
+        </section>
+
+        <section class="auth-box">
+          <h3 id="editor-heading">Create post</h3>
+          <form id="post-editor-form">
+            <input type="hidden" id="post-id" />
+            <div class="form-row">
+              <label for="post-title-input">Title</label>
+              <input id="post-title-input" name="title" type="text" maxlength="200" required />
+            </div>
+            <div class="form-row">
+              <label for="post-slug-input">Slug</label>
+              <input id="post-slug-input" name="slug" type="text" maxlength="120" required />
+            </div>
+            <div class="form-row">
+              <label for="post-date-input">Published date</label>
+              <input id="post-date-input" name="publishedAt" type="date" />
+            </div>
+            <div class="form-row">
+              <label for="post-readtime-input">Read time</label>
+              <input id="post-readtime-input" name="readTime" type="text" maxlength="40" placeholder="e.g. 4 min read" />
+            </div>
+            <div class="form-row">
+              <label for="post-excerpt-input">Excerpt</label>
+              <textarea id="post-excerpt-input" name="excerpt" maxlength="400" required></textarea>
+            </div>
+            <div class="form-row">
+              <label for="post-content-input">Content HTML</label>
+              <textarea id="post-content-input" name="contentHtml" class="editor-textarea" required></textarea>
+            </div>
+            <div class="form-row checkbox-row">
+              <label class="checkbox-label">
+                <input id="post-published-input" name="isPublished" type="checkbox" />
+                Publish this post
+              </label>
+            </div>
+            <div class="buttons">
+              <button class="primary" type="submit">Save post</button>
+              <button class="secondary" id="reset-editor-button" type="button">Clear form</button>
+              <a class="button" id="preview-link" href="blog.html">Open blog</a>
+            </div>
+          </form>
+        </section>
       </div>
     </section>
 
-    <div class="footer">
-      Private editor page
-    </div>
+    <div class="footer">Private editor page</div>
   </main>
 
   <script type="module" src="admin.js"></script>

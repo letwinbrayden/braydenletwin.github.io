@@ -1,20 +1,40 @@
-import { BLOG_POSTS } from './posts.js';
-import { createPostCard, sortPostsNewestFirst } from './site-utils.js';
+import { createPostCard } from './site-utils.js';
+import { fetchPublishedPosts, isBlogConfigured } from './blog-data.js';
 
 const postList = document.getElementById('blog-post-list');
 
-if (postList) {
-  const posts = sortPostsNewestFirst(BLOG_POSTS);
+async function initBlog() {
+  if (!postList) return;
 
-  if (posts.length === 0) {
+  if (!isBlogConfigured()) {
     const empty = document.createElement('div');
     empty.className = 'empty-state';
-    empty.textContent =
-      'There are no posts yet. Add entries to posts.js and they will appear here automatically.';
+    empty.textContent = 'The blog will appear here once Supabase is configured.';
     postList.appendChild(empty);
-  } else {
+    return;
+  }
+
+  try {
+    const posts = await fetchPublishedPosts();
+
+    if (posts.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'empty-state';
+      empty.textContent = 'There are no published posts yet.';
+      postList.appendChild(empty);
+      return;
+    }
+
     posts.forEach((post) => {
       postList.appendChild(createPostCard(post));
     });
+  } catch (error) {
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.textContent = 'Could not load the blog right now.';
+    postList.appendChild(empty);
+    console.error(error);
   }
 }
+
+initBlog();
