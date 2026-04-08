@@ -51,8 +51,13 @@ function setNotice(message, type = '') {
   noticeEl.appendChild(notice);
 }
 
+function setStatusHtml(html) {
+  statusEl.innerHTML = html;
+  statusEl.style.display = 'block';
+}
+
 function renderMessage(title, body) {
-  statusEl.innerHTML = `<div class="empty-state"><strong>${escapeHtml(title)}</strong><br />${body}</div>`;
+  setStatusHtml(`<div class="empty-state"><strong>${escapeHtml(title)}</strong><br />${body}</div>`);
 }
 
 function resetForm() {
@@ -157,6 +162,42 @@ async function loadPosts() {
   renderPostList();
 }
 
+function renderSignInForm(message = 'Sign in with your admin account to edit posts.') {
+  setStatusHtml(`
+    <div class="auth-box">
+      <h3 style="margin-top:0;">Admin sign in</h3>
+      <p class="muted">${escapeHtml(message)}</p>
+      <form id="admin-sign-in-form">
+        <div class="form-row">
+          <label for="admin-email">Email</label>
+          <input id="admin-email" name="email" type="email" required />
+        </div>
+        <div class="form-row">
+          <label for="admin-password">Password</label>
+          <input id="admin-password" name="password" type="password" required />
+        </div>
+        <button class="primary" type="submit">Sign in</button>
+      </form>
+      <div id="admin-inline-notice" style="margin-top:14px;"></div>
+    </div>
+  `);
+
+  document.getElementById('admin-sign-in-form')?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const notice = document.getElementById('admin-inline-notice');
+    if (notice) notice.innerHTML = '';
+    const formData = new FormData(event.currentTarget);
+    const email = String(formData.get('email') || '').trim();
+    const password = String(formData.get('password') || '');
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      if (notice) notice.innerHTML = `<div class="notice error">${escapeHtml(error.message)}</div>`;
+      return;
+    }
+    await requireAdmin();
+  });
+}
+
 async function requireAdmin() {
   if (!supabase) {
     renderMessage('Supabase not configured.', 'Fill in <span class="code-inline">supabase-config.js</span> before using the protected editor page.');
@@ -171,7 +212,7 @@ async function requireAdmin() {
 
   state.session = sessionData.session;
   if (!state.session) {
-    renderMessage('Please sign in.', 'This page only loads for signed-in admins. Sign in on any blog post page first.');
+    renderSignInForm();
     return;
   }
 
@@ -182,8 +223,13 @@ async function requireAdmin() {
     return;
   }
 
+  if (!state.profile) {
+    renderMessage('No profile row found.', 'Your auth account exists, but the matching row in <span class="code-inline">public.profiles</span> is missing. Sign out and sign back in, or create the profile row in Supabase.');
+    return;
+  }
+
   if (!state.profile?.is_admin) {
-    renderMessage('Access denied.', 'Your account is signed in, but it is not marked as an admin account.');
+    renderMessage('Access denied.', 'You are signed in, but this account is not marked as an admin yet.');
     return;
   }
 
@@ -236,11 +282,19 @@ resetEditorButton?.addEventListener('click', () => {
 signOutButton?.addEventListener('click', async () => {
   if (!supabase) return;
   await supabase.auth.signOut();
-  window.location.reload();
+  appEl.style.display = 'none';
+  renderSignInForm('You have been signed out. Sign back in to continue editing.');
 });
 
-supabase?.auth.onAuthStateChange(() => {
-  window.location.reload();
+supabase?.auth.onAuthStateChange(async (_event, session) => {
+  const oldUserId = state.session?.user?.id || null;
+  const newUserId = session?.user?.id || null;
+  state.session = session || null;
+
+  if (oldUserId !== newUserId) {
+    appEl.style.display = 'none';
+    await requireAdmin();
+  }
 });
 
 requireAdmin();
