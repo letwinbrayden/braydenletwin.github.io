@@ -3,67 +3,54 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Post · Brayden Letwin</title>
-  <meta name="description" content="Blog post by Brayden Letwin." />
-  <link rel="stylesheet" href="site.css" />
+  <title>Post | Brayden Letwin</title>
+  <meta
+    name="description"
+    content="Blog post and comments."
+  />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <main class="page">
-    <nav class="card topbar" aria-label="Primary">
-      <a class="brand" href="index.html">Brayden Letwin</a>
-      <div class="nav">
-        <a href="index.html">Home</a>
-        <a href="publications.html">Publications</a>
-        <a class="active" href="blog.html">Blog</a>
-        <a href="admin.html">Admin</a>
+    <nav class="site-nav" aria-label="Primary">
+      <a class="home-link" href="index.html">Brayden Letwin</a>
+      <div class="nav-links">
+        <a class="button secondary" href="blog.html">All posts</a>
+        <a class="button" href="publications.html">Publications</a>
+        <a class="button primary" href="CV.pdf" target="_blank" rel="noopener noreferrer">Curriculum Vitae</a>
       </div>
     </nav>
 
-    <div class="split">
-      <section class="stack">
-        <article id="post-article" class="card post-article">
-          <div class="empty-state">Loading post…</div>
-        </article>
+    <div class="two-column">
+      <article class="card" id="post-shell">
+        <header class="post-header">
+          <div class="kicker">Blog post</div>
+          <h1 class="post-title" id="post-title">Loading…</h1>
+          <ul class="inline-list" id="post-meta"></ul>
+        </header>
+        <div class="post-body" id="post-body"></div>
+      </article>
 
-        <section class="card section">
-          <h2>Comments</h2>
-          <div id="comment-status" class="status hidden"></div>
-          <div id="comment-composer" style="margin-bottom: 18px;"></div>
-          <div id="comment-list" class="comment-list"></div>
-        </section>
-      </section>
+      <aside class="card sidebar-card">
+        <div class="comments-header">
+          <h2 style="margin-bottom: 0;">Comments</h2>
+          <a href="blog.html">Back to blog</a>
+        </div>
 
-      <aside class="stack">
-        <section class="card panel">
-          <h2 style="margin-top: 0;">Account</h2>
-          <div id="auth-status" class="status hidden"></div>
-          <div id="auth-widget"></div>
-        </section>
+        <div id="auth-notices"></div>
+        <div id="auth-panel" aria-live="polite"></div>
 
-        <section class="card panel">
-          <h2 style="margin-top: 0;">Back</h2>
-          <div class="inline-actions">
-            <a class="button" href="blog.html">All posts</a>
-          </div>
-        </section>
+        <div style="height: 18px;"></div>
 
-        <section class="card panel">
-          <h2 style="margin-top: 0;">Setup note</h2>
-          <p class="muted small">
-            This page reads the post slug from the URL, for example <span class="code">post.html?slug=my-first-post</span>.
-          </p>
-          <div id="post-status" class="status hidden"></div>
-        </section>
+        <div id="comment-form-wrap"></div>
+
+        <div style="height: 18px;"></div>
+
+        <div id="comments-wrap" aria-live="polite"></div>
       </aside>
-    </div>
-
-    <div class="footer">
-      Brayden Letwin
     </div>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/config.js"></script>
-  <script type="module" src="js/postPage.js"></script>
+  <script type="module" src="post.js"></script>
 </body>
 </html>

@@ -3,115 +3,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin · Brayden Letwin</title>
-  <meta name="description" content="Admin blog editor for Brayden Letwin." />
-  <link rel="stylesheet" href="site.css" />
+  <title>Editor | Brayden Letwin</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="description" content="Protected editor page for Brayden Letwin." />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <main class="page">
-    <nav class="card topbar" aria-label="Primary">
-      <a class="brand" href="index.html">Brayden Letwin</a>
-      <div class="nav">
-        <a href="index.html">Home</a>
-        <a href="publications.html">Publications</a>
-        <a href="blog.html">Blog</a>
-        <a class="active" href="admin.html">Admin</a>
+    <nav class="site-nav" aria-label="Primary">
+      <a class="home-link" href="index.html">Brayden Letwin</a>
+      <div class="nav-links">
+        <a class="button secondary" href="index.html">Home</a>
+        <a class="button" href="blog.html">Blog</a>
       </div>
     </nav>
 
-    <div class="split">
-      <section class="stack">
-        <section class="card editor-card">
-          <div class="kicker">Editor</div>
-          <h1 class="page-title">Manage blog posts</h1>
-          <p class="subtitle">This editor is meant for site admins. Posts are stored in Supabase and comments remain attached to the post.</p>
-          <div id="admin-status" class="status hidden"></div>
-        </section>
+    <section class="card section page-intro">
+      <div class="kicker">Editor</div>
+      <h1 style="margin-bottom: 12px;">Protected page</h1>
+      <p class="muted" style="margin: 0;">
+        This page is intentionally not linked publicly and only renders for signed-in admins.
+      </p>
+    </section>
 
-        <div id="admin-locked" class="card editor-card">
-          <div class="empty-state">Checking access…</div>
-        </div>
+    <section class="card section" id="admin-status" aria-live="polite">
+      <div class="empty-state">Checking access…</div>
+    </section>
 
-        <div id="admin-editor" class="editor-layout hidden">
-          <section class="card editor-card">
-            <h2 style="margin-top: 0;">Post editor</h2>
-            <form id="post-form">
-              <div class="form-grid">
-                <div class="form-row">
-                  <label for="post-title">Title</label>
-                  <input id="post-title" type="text" required maxlength="200" />
-                </div>
-                <div class="form-row">
-                  <label for="post-slug">Slug</label>
-                  <input id="post-slug" type="text" required maxlength="200" placeholder="my-first-post" />
-                </div>
-              </div>
-
-              <div class="form-row">
-                <label for="post-summary">Summary</label>
-                <textarea id="post-summary" maxlength="500" style="min-height: 100px;"></textarea>
-              </div>
-
-              <div class="form-grid">
-                <div class="form-row">
-                  <div class="checkbox-row">
-                    <input id="post-is-published" type="checkbox" />
-                    <label for="post-is-published">Published</label>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <label for="post-published-at">Publish date</label>
-                  <input id="post-published-at" type="datetime-local" />
-                </div>
-              </div>
-
-              <div class="form-row">
-                <label for="post-content-html">Post content (HTML)</label>
-                <textarea id="post-content-html" required style="min-height: 360px;" placeholder="&lt;p&gt;Write your post here.&lt;/p&gt;"></textarea>
-              </div>
-
-              <div class="inline-actions">
-                <button id="save-post-button" class="button primary" type="submit">Save post</button>
-                <button id="cancel-edit-button" class="button soft hidden" type="button">Cancel editing</button>
-              </div>
-              <p class="small muted" style="margin-bottom: 0; margin-top: 14px;">
-                This starter stores trusted HTML in the database. Since only admins can write posts, that is fine for a small personal site. If you later add guest authors, sanitize content on the server before saving.
-              </p>
-            </form>
-          </section>
-
-          <section class="card editor-card">
-            <h2 style="margin-top: 0;">Existing posts</h2>
-            <div id="admin-post-list" class="post-admin-list"></div>
-          </section>
-        </div>
-      </section>
-
-      <aside class="stack">
-        <section class="card panel">
-          <h2 style="margin-top: 0;">Account</h2>
-          <div id="auth-status" class="status hidden"></div>
-          <div id="auth-widget"></div>
-        </section>
-
-        <section class="card panel">
-          <h2 style="margin-top: 0;">Workflow</h2>
-          <ol class="small muted" style="padding-left: 18px; margin-bottom: 0;">
-            <li>Sign in with your admin account.</li>
-            <li>Create a draft or publish a post.</li>
-            <li>Open the public post page to verify comments and layout.</li>
-          </ol>
-        </section>
-      </aside>
-    </div>
+    <section class="card section" id="admin-app" style="display:none;">
+      <h2>Admin tools</h2>
+      <p>
+        Your posts are currently stored in <span class="code-inline">posts.js</span>, so publishing is still a file edit rather than a database action.
+        This page exists mainly as a protected owner-only area.
+      </p>
+      <div class="auth-box">
+        <h3>Current workflow</h3>
+        <ul>
+          <li>Edit or add post objects in <span class="code-inline">posts.js</span>.</li>
+          <li>Redeploy the site after changes.</li>
+          <li>Use Supabase only for accounts and comments.</li>
+        </ul>
+      </div>
+      <div class="auth-box">
+        <h3>Account status</h3>
+        <p class="muted" id="admin-user-info" style="margin-bottom:0;"></p>
+      </div>
+      <div class="buttons">
+        <a class="button" href="blog.html">View blog</a>
+        <button class="secondary" id="admin-sign-out" type="button">Sign out</button>
+      </div>
+    </section>
 
     <div class="footer">
-      Brayden Letwin
+      Private editor page
     </div>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/config.js"></script>
-  <script type="module" src="js/adminPage.js"></script>
+  <script type="module" src="admin.js"></script>
 </body>
 </html>

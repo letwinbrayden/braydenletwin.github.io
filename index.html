@@ -4,25 +4,27 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Brayden Letwin</title>
-  <meta name="description" content="Brayden Letwin — mathematics, theoretical computer science, and writing." />
-  <link rel="stylesheet" href="site.css" />
+  <meta
+    name="description"
+    content="Brayden Letwin — mathematics, theoretical computer science, and probability."
+  />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <main class="page">
-    <nav class="card topbar" aria-label="Primary">
-      <a class="brand" href="index.html">Brayden Letwin</a>
-      <div class="nav">
-        <a class="active" href="index.html">Home</a>
-        <a href="publications.html">Publications</a>
-        <a href="blog.html">Blog</a>
-        <a href="admin.html">Admin</a>
+    <nav class="site-nav" aria-label="Primary">
+      <a class="home-link" href="index.html">Brayden Letwin</a>
+      <div class="nav-links">
+        <a class="button secondary" href="blog.html">Blog</a>
+        <a class="button" href="publications.html">Publications</a>
+        <a class="button primary" href="CV.pdf" target="_blank" rel="noopener noreferrer">Curriculum Vitae</a>
       </div>
     </nav>
 
     <section class="card hero">
       <img src="image.jpeg" alt="Brayden Letwin" class="portrait" />
 
-      <div class="hero-copy">
+      <div>
         <h1>Brayden Letwin</h1>
         <p class="subtitle">Mathematics • Theoretical Computer Science</p>
 
@@ -34,7 +36,7 @@
         <div class="buttons">
           <a class="button primary" href="CV.pdf" target="_blank" rel="noopener noreferrer">Curriculum Vitae</a>
           <a class="button" href="publications.html">Publications</a>
-          <a class="button" href="blog.html">Blog</a>
+          <a class="button secondary" href="blog.html">Blog</a>
         </div>
       </div>
     </section>
@@ -46,16 +48,17 @@
       </p>
     </section>
 
-    <section class="card section">
-      <div class="latest-posts-header">
-        <div>
-          <h2 style="margin-bottom: 8px;">Blog</h2>
-          <p class="muted" style="margin: 0;">A simple blog area has been added, with account-based comments on each post.</p>
-        </div>
-        <a class="button" href="blog.html">View all posts</a>
+    <section class="card section" id="blog-preview-section">
+      <div class="comments-header">
+        <h2 style="margin-bottom: 0;">Blog</h2>
+        <a href="blog.html">View all posts</a>
       </div>
-      <div id="home-blog-status" class="status hidden"></div>
-      <div id="home-blog-list" class="blog-grid"></div>
+
+      <p class="muted" id="blog-preview-copy">
+        Notes, announcements, and longer-form writing.
+      </p>
+
+      <div id="latest-posts" class="grid blog-grid" aria-live="polite"></div>
     </section>
 
     <div class="footer">
@@ -63,8 +66,6 @@
     </div>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/config.js"></script>
-  <script type="module" src="js/home.js"></script>
+  <script type="module" src="home.js"></script>
 </body>
 </html>

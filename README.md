@@ -1,58 +1,92 @@
-# Brayden Letwin site starter with blog, accounts, and comments
+# Blog + accounts + comments for your site
 
-This bundle keeps your site mostly static HTML/CSS, then adds:
+This package keeps your site mostly static, but adds:
 
-- a public blog listing page (`blog.html`)
-- individual post pages (`post.html?slug=...`)
-- account creation and sign-in using Supabase Auth
-- authenticated comments tied to user profiles
-- an admin page (`admin.html`) for creating and publishing posts
+- a blog landing page,
+- individual blog post pages,
+- email/password account creation,
+- sign-in/sign-out,
+- per-post comments,
+- deletion of your own comments.
 
 ## Files
 
-- `index.html` — your homepage, now with a blog section
-- `blog.html` — all public posts + account panel
-- `post.html` — single post + comments
-- `admin.html` — admin-only post editor
-- `site.css` — shared styling
-- `js/config.js` — put your Supabase project values here
-- `supabase/schema.sql` — database schema, triggers, and RLS policies
+- `index.html` — updated home page with a blog section
+- `blog.html` — blog archive page
+- `post.html` — single post page with auth + comments
+- `styles.css` — shared styling for all pages
+- `posts.js` — your blog post data
+- `home.js`, `blog.js`, `post.js` — page logic
+- `supabase-config.js` — fill in your project URL and key
+- `supabase-setup.sql` — database tables, trigger, RLS policies
+- `admin.html`, `admin.js` — protected owner-only editor page
 
-## Setup
+## How to publish posts
+
+Open `posts.js` and edit the `BLOG_POSTS` array.
+
+Each post has:
+
+- `slug` — permanent identifier for the post
+- `title`
+- `publishedAt` — in `YYYY-MM-DD`
+- `readTime`
+- `excerpt`
+- `contentHtml`
+
+After a post is live, do not change its slug unless you are okay with losing the connection to its old comments.
+
+## Supabase setup
 
 1. Create a Supabase project.
-2. Open the SQL Editor and run `supabase/schema.sql`.
-3. In `js/config.js`, replace the placeholder values with your project URL and publishable key (or legacy anon key).
-4. In Supabase Auth settings, set your Site URL to your real site URL. During development, also add your local URL (for example `http://127.0.0.1:5500` or whatever your local server uses).
-5. Open `blog.html`, create your account, then make yourself an admin in the SQL Editor with:
+2. In the Supabase SQL Editor, run `supabase-setup.sql`.
+3. Open `supabase-config.js` and replace the placeholders with your project URL and anon/publishable key.
+4. In Auth settings, set your Site URL and allowed Redirect URLs to your deployed domain.
+5. Deploy the site.
 
-```sql
-insert into public.site_admins (user_id)
-select id
-from auth.users
-where email = 'your-email@example.com'
-on conflict do nothing;
-```
+## Important note about email confirmations
 
-6. Visit `admin.html`, sign in, and create your first post.
+If email confirmation is enabled, users will usually need to confirm their email before they can sign in the first time.
 
-## Notes
+## Local testing
 
-- The post editor stores trusted HTML in `content_html`.
-- Comments are public to read, but only signed-in users can create them.
-- Only accounts listed in `site_admins` can create, edit, publish, or delete posts.
-- The browser code should use only the publishable/anon key. Never put a service-role key in `js/config.js`.
+Because this site uses JavaScript modules, test it through a local web server rather than opening the HTML files directly with `file://`.
 
-## Local preview
-
-Any static file server is fine. For example, from this folder:
+One simple option is:
 
 ```bash
 python3 -m http.server 8000
 ```
 
-Then open:
+Then open `http://localhost:8000` in your browser.
 
-- `http://localhost:8000/index.html`
-- `http://localhost:8000/blog.html`
-- `http://localhost:8000/admin.html`
+## Replacing your current site
+
+Copy these files into the same folder as your current site assets:
+
+- keep your existing `image.jpeg`
+- keep your existing `CV.pdf`
+- keep your existing `publications.html`
+
+If you already have custom pages, merge the new navigation links into them as needed.
+
+
+## Hiding and protecting the admin page
+
+The site now includes a protected page at `admin.html`.
+
+- It is not linked from the public navigation.
+- It uses `<meta name="robots" content="noindex,nofollow">`.
+- It checks whether the signed-in user has `is_admin = true` in `public.profiles` before showing any admin content.
+
+To make your own account an admin after signing up, run:
+
+```sql
+update public.profiles
+set is_admin = true
+where id = 'YOUR-USER-UUID';
+```
+
+You can find your user UUID in the Supabase Authentication users table or by querying `public.profiles`.
+
+At the moment, blog posts still live in `posts.js`, so the admin page is a protected owner-only area rather than a full CMS.
