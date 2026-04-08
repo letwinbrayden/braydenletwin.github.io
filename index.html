@@ -4,22 +4,193 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Brayden Letwin</title>
-  <meta
-    name="description"
-    content="Brayden Letwin — mathematics, theoretical computer science, and probability."
-  />
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    :root {
+      --bg: #f8f8f6;
+      --card: #ffffff;
+      --text: #1f2430;
+      --muted: #5f6775;
+      --line: #d9dde3;
+      --accent: #4b2e83;
+      --shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+      --max-width: 920px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Georgia, "Times New Roman", Times, serif;
+      line-height: 1.7;
+      font-size: 17px;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 40px 20px 60px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 32px;
+      align-items: center;
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+
+    .portrait {
+      width: 220px;
+      height: 260px;
+      object-fit: cover;
+      object-position: center top;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      display: block;
+      background: #f0f0f0;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 2.3rem;
+      line-height: 1.1;
+      font-weight: 600;
+    }
+
+    .subtitle {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .meta {
+      margin: 0 0 18px;
+      color: var(--muted);
+    }
+
+    .meta div {
+      margin-bottom: 4px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 10px 16px;
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      color: var(--accent);
+      background: transparent;
+      transition: 0.15s ease;
+    }
+
+    .button.primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .button:hover {
+      text-decoration: none;
+      transform: translateY(-1px);
+    }
+
+    .section {
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+
+    .section h2 {
+      margin: 0 0 16px;
+      font-size: 1.3rem;
+      color: var(--accent);
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .section p {
+      margin: 0;
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 22px;
+    }
+
+    @media (max-width: 700px) {
+      body {
+        font-size: 16px;
+      }
+
+      .page {
+        padding: 14px 10px 30px;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 18px;
+        padding: 22px 18px;
+      }
+
+      .portrait {
+        width: 120px;
+        height: 145px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        font-size: 1.85rem;
+      }
+
+      .subtitle {
+        font-size: 0.98rem;
+      }
+
+      .buttons {
+        justify-content: center;
+      }
+
+      .section {
+        padding: 20px 18px;
+      }
+
+      .section h2 {
+        font-size: 1.12rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <main class="page">
-    <nav class="site-nav" aria-label="Primary">
-      <a class="home-link" href="index.html">Brayden Letwin</a>
-      <div class="nav-links">
-        <a class="button secondary" href="blog.html">Blog</a>
-        <a class="button primary" href="CV.pdf" target="_blank" rel="noopener noreferrer">Curriculum Vitae</a>
-      </div>
-    </nav>
-
     <section class="card hero">
       <img src="image.jpeg" alt="Brayden Letwin" class="portrait" />
 
@@ -34,7 +205,8 @@
 
         <div class="buttons">
           <a class="button primary" href="CV.pdf" target="_blank" rel="noopener noreferrer">Curriculum Vitae</a>
-          <a class="button secondary" href="blog.html">Blog</a>
+          <a class="button" href="blog.html">Blog</a>
+          <a class="button" href="publications.html">Publications</a>
         </div>
       </div>
     </section>
@@ -46,24 +218,9 @@
       </p>
     </section>
 
-    <section class="card section" id="blog-preview-section">
-      <div class="comments-header">
-        <h2 style="margin-bottom: 0;">Blog</h2>
-        <a href="blog.html">View all posts</a>
-      </div>
-
-      <p class="muted" id="blog-preview-copy">
-        Notes, announcements, and longer-form writing.
-      </p>
-
-      <div id="latest-posts" class="grid blog-grid" aria-live="polite"></div>
-    </section>
-
     <div class="footer">
       Last updated April 2026
     </div>
   </main>
-
-  <script type="module" src="home.js"></script>
 </body>
 </html>
