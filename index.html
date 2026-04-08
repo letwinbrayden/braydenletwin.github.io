@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brayden Letwin</title>
+  <meta name="description" content="Brayden Letwin — mathematics, theoretical computer science, and writing." />
+  <link rel="stylesheet" href="site.css" />
+</head>
+<body>
+  <main class="page">
+    <nav class="card topbar" aria-label="Primary">
+      <a class="brand" href="index.html">Brayden Letwin</a>
+      <div class="nav">
+        <a class="active" href="index.html">Home</a>
+        <a href="publications.html">Publications</a>
+        <a href="blog.html">Blog</a>
+        <a href="admin.html">Admin</a>
+      </div>
+    </nav>
+
+    <section class="card hero">
+      <img src="image.jpeg" alt="Brayden Letwin" class="portrait" />
+
+      <div class="hero-copy">
+        <h1>Brayden Letwin</h1>
+        <p class="subtitle">Mathematics • Theoretical Computer Science</p>
+
+        <div class="meta">
+          <div>PhD Mathematics, University of Washington</div>
+          <div><a href="mailto:letwin@uw.edu">letwin@uw.edu</a></div>
+        </div>
+
+        <div class="buttons">
+          <a class="button primary" href="CV.pdf" target="_blank" rel="noopener noreferrer">Curriculum Vitae</a>
+          <a class="button" href="publications.html">Publications</a>
+          <a class="button" href="blog.html">Blog</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="card section">
+      <h2>About</h2>
+      <p>
+        I am an undergraduate student at the University of Alberta studying probability. I will enter the PhD program in mathematics at the University of Washington in September 2026. My interests largely include convex geometry, random matrices, theoretical computer science and other high-dimensional/random phenomena.
+      </p>
+    </section>
+
+    <section class="card section">
+      <div class="latest-posts-header">
+        <div>
+          <h2 style="margin-bottom: 8px;">Blog</h2>
+          <p class="muted" style="margin: 0;">A simple blog area has been added, with account-based comments on each post.</p>
+        </div>
+        <a class="button" href="blog.html">View all posts</a>
+      </div>
+      <div id="home-blog-status" class="status hidden"></div>
+      <div id="home-blog-list" class="blog-grid"></div>
+    </section>
+
+    <div class="footer">
+      Last updated April 2026
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script type="module" src="js/home.js"></script>
+</body>
+</html>

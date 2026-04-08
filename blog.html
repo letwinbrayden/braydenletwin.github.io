@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog · Brayden Letwin</title>
+  <meta name="description" content="Blog posts by Brayden Letwin." />
+  <link rel="stylesheet" href="site.css" />
+</head>
+<body>
+  <main class="page">
+    <nav class="card topbar" aria-label="Primary">
+      <a class="brand" href="index.html">Brayden Letwin</a>
+      <div class="nav">
+        <a href="index.html">Home</a>
+        <a href="publications.html">Publications</a>
+        <a class="active" href="blog.html">Blog</a>
+        <a href="admin.html">Admin</a>
+      </div>
+    </nav>
+
+    <div class="split">
+      <section class="stack">
+        <section class="card section">
+          <div class="kicker">Writing</div>
+          <h1 class="page-title">Blog</h1>
+          <p class="subtitle">Posts are public. Comments require an account so each comment is attached to a real user profile.</p>
+          <div id="blog-status" class="status hidden"></div>
+          <div id="blog-list" class="blog-grid"></div>
+        </section>
+      </section>
+
+      <aside class="stack">
+        <section class="card panel">
+          <h2 style="margin-top: 0;">Account</h2>
+          <div id="auth-status" class="status hidden"></div>
+          <div id="auth-widget"></div>
+        </section>
+
+        <section class="card panel">
+          <h2 style="margin-top: 0;">Notes</h2>
+          <p class="muted small">
+            This starter uses Supabase for authentication and comments. Once you add your project URL and key in <span class="code">js/config.js</span>, visitors can create accounts, sign in, and comment under posts.
+          </p>
+        </section>
+      </aside>
+    </div>
+
+    <div class="footer">
+      Brayden Letwin
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script type="module" src="js/blogListPage.js"></script>
+</body>
+</html>
