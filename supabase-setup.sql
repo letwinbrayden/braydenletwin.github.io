@@ -68,15 +68,35 @@ create trigger publications_set_updated_at
   before update on public.publications
   for each row execute procedure public.set_updated_at();
 
+
+create table if not exists public.site_content (
+  key text primary key,
+  content jsonb not null default '{}'::jsonb,
+  created_at timestamptz not null default timezone('utc', now()),
+  updated_at timestamptz not null default timezone('utc', now())
+);
+
+create index if not exists site_content_updated_at_idx
+  on public.site_content (updated_at desc);
+
+drop trigger if exists site_content_set_updated_at on public.site_content;
+create trigger site_content_set_updated_at
+  before update on public.site_content
+  for each row execute procedure public.set_updated_at();
+
 alter table public.profiles enable row level security;
 alter table public.publications enable row level security;
+alter table public.site_content enable row level security;
 
 revoke all on table public.profiles from anon, authenticated;
 revoke all on table public.publications from anon, authenticated;
+revoke all on table public.site_content from anon, authenticated;
 
 grant select on table public.profiles to anon, authenticated;
 grant select on table public.publications to anon, authenticated;
+grant select on table public.site_content to anon, authenticated;
 grant insert, update, delete on table public.publications to authenticated;
+grant insert, update, delete on table public.site_content to authenticated;
 
 drop policy if exists "Public can view profiles" on public.profiles;
 drop policy if exists "Public can view published publications" on public.publications;
@@ -84,6 +104,11 @@ drop policy if exists "Admins can view all publications" on public.publications;
 drop policy if exists "Admins can insert publications" on public.publications;
 drop policy if exists "Admins can update publications" on public.publications;
 drop policy if exists "Admins can delete publications" on public.publications;
+drop policy if exists "Public can view site content" on public.site_content;
+drop policy if exists "Admins can view all site content" on public.site_content;
+drop policy if exists "Admins can insert site content" on public.site_content;
+drop policy if exists "Admins can update site content" on public.site_content;
+drop policy if exists "Admins can delete site content" on public.site_content;
 
 create policy "Public can view profiles"
   on public.profiles
@@ -154,3 +179,69 @@ create policy "Admins can delete publications"
         and profiles.is_admin = true
     )
   );
+
+create policy "Public can view site content"
+  on public.site_content
+  for select
+  using (true);
+
+create policy "Admins can view all site content"
+  on public.site_content
+  for select
+  to authenticated
+  using (
+    exists (
+      select 1
+      from public.profiles
+      where profiles.id = auth.uid()
+        and profiles.is_admin = true
+    )
+  );
+
+create policy "Admins can insert site content"
+  on public.site_content
+  for insert
+  to authenticated
+  with check (
+    exists (
+      select 1
+      from public.profiles
+      where profiles.id = auth.uid()
+        and profiles.is_admin = true
+    )
+  );
+
+create policy "Admins can update site content"
+  on public.site_content
+  for update
+  to authenticated
+  using (
+    exists (
+      select 1
+      from public.profiles
+      where profiles.id = auth.uid()
+        and profiles.is_admin = true
+    )
+  )
+  with check (
+    exists (
+      select 1
+      from public.profiles
+      where profiles.id = auth.uid()
+        and profiles.is_admin = true
+    )
+  );
+
+create policy "Admins can delete site content"
+  on public.site_content
+  for delete
+  to authenticated
+  using (
+    exists (
+      select 1
+      from public.profiles
+      where profiles.id = auth.uid()
+        and profiles.is_admin = true
+    )
+  );
+

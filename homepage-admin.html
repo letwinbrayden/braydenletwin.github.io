@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Homepage Editor | Brayden Letwin</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="description" content="Protected homepage editor for Brayden Letwin." />
+  <link rel="stylesheet" href="styles.css" />
+
+  <script src="publications-mathjax-config.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
+
+  <style>
+    .admin-status-grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .admin-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .admin-panel-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .admin-panel-heading h3,
+    .admin-panel-heading p {
+      margin: 0;
+    }
+
+    .editor-textarea {
+      min-height: 150px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      line-height: 1.55;
+    }
+
+    .editor-textarea.compact {
+      min-height: 108px;
+    }
+
+    .admin-helper,
+    .admin-code-card {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(75, 46, 131, 0.04);
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .admin-helper {
+      margin-bottom: 14px;
+    }
+
+    .admin-code-card pre {
+      margin: 10px 0 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+
+    .admin-inline-note {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .admin-auth-actions {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .admin-status-message strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .preview-shell {
+      display: grid;
+      gap: 12px;
+    }
+
+    .preview-frame {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fbfaf8;
+      min-height: 360px;
+    }
+
+    .homepage-preview {
+      max-width: 920px;
+      margin: 0 auto;
+      display: grid;
+      gap: 20px;
+    }
+
+    .homepage-preview .card {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    .homepage-preview .hero {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 24px;
+      align-items: center;
+      padding: 24px;
+    }
+
+    .homepage-preview .portrait {
+      width: 180px;
+      height: 220px;
+      object-fit: cover;
+      object-position: center top;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      display: block;
+      background: #f0f0f0;
+    }
+
+    .homepage-preview h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+      font-weight: 600;
+    }
+
+    .homepage-preview .subtitle {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .homepage-preview .meta {
+      margin: 0 0 18px;
+      color: var(--muted);
+    }
+
+    .homepage-preview .meta div {
+      margin-bottom: 4px;
+    }
+
+    .homepage-preview .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .homepage-preview .button {
+      display: inline-block;
+      padding: 10px 16px;
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      color: var(--accent);
+      background: transparent;
+      transition: 0.15s ease;
+    }
+
+    .homepage-preview .button.primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .homepage-preview .section {
+      padding: 24px 28px;
+      margin: 0;
+    }
+
+    .homepage-preview .section h2 {
+      margin: 0 0 16px;
+      font-size: 1.2rem;
+      color: var(--accent);
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .homepage-preview .rich-text .home-block {
+      margin: 0 0 1em;
+    }
+
+    .homepage-preview .rich-text .home-block:last-child {
+      margin-bottom: 0;
+    }
+
+    .homepage-preview .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 2px;
+    }
+
+    .two-column-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    @media (max-width: 980px) {
+      .admin-shell {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .two-column-grid,
+      .admin-panel-heading {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .homepage-preview .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .homepage-preview .portrait {
+        width: 120px;
+        height: 145px;
+        margin: 0 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="site-nav" aria-label="Primary">
+      <a class="home-link" href="index.html">Brayden Letwin</a>
+      <div class="nav-links">
+        <a class="button secondary" href="index.html">Home page</a>
+        <a class="button secondary" href="publications.html">Publications page</a>
+        <a class="button secondary" href="publications-admin.html">Publications editor</a>
+      </div>
+    </nav>
+
+    <section class="card section page-intro">
+      <div class="kicker">Editor</div>
+      <h1 style="margin-bottom: 12px;">Protected homepage editor</h1>
+      <p class="muted" style="margin: 0;">
+        Sign in with your admin account to edit the main page directly from the website. Enter plain text plus optional markdown-style links like <code>[label](url)</code>; the page layout is generated for you automatically. LaTeX is also supported through MathJax if you need it.
+      </p>
+    </section>
+
+    <section class="card section" id="admin-status" aria-live="polite">
+      <div class="empty-state">Checking access…</div>
+    </section>
+
+    <section class="card section" id="admin-app" hidden>
+      <div class="comments-header">
+        <div>
+          <h2 style="margin-bottom: 8px;">Homepage content</h2>
+          <p class="muted" id="admin-user-info" style="margin:0;"></p>
+        </div>
+        <div class="buttons" style="margin-top:0;">
+          <button class="secondary" id="refresh-homepage-button" type="button">Refresh</button>
+          <button class="secondary" id="import-bootstrap-button" type="button">Import current page</button>
+          <button class="secondary" id="reset-editor-button" type="button">Reset editor</button>
+          <button class="secondary" id="admin-sign-out" type="button">Sign out</button>
+        </div>
+      </div>
+
+      <div id="admin-notices"></div>
+
+      <div class="admin-shell">
+        <section class="auth-box">
+          <div class="admin-panel-heading">
+            <div>
+              <h3>Editable fields</h3>
+              <p class="muted small">This page controls the public homepage at <span class="code-inline">index.html</span>.</p>
+            </div>
+            <a class="button secondary" id="preview-link" href="index.html" target="_blank" rel="noopener noreferrer">Open homepage</a>
+          </div>
+
+          <form id="homepage-editor-form" novalidate>
+            <div class="two-column-grid">
+              <div class="form-row">
+                <label for="homepage-site-title-input">Browser tab title</label>
+                <input id="homepage-site-title-input" name="siteTitle" type="text" maxlength="120" />
+              </div>
+              <div class="form-row">
+                <label for="homepage-name-input">Main heading / name</label>
+                <input id="homepage-name-input" name="name" type="text" maxlength="160" />
+              </div>
+            </div>
+
+            <div class="two-column-grid">
+              <div class="form-row">
+                <label for="homepage-subtitle-input">Subtitle</label>
+                <input id="homepage-subtitle-input" name="subtitle" type="text" maxlength="220" />
+              </div>
+              <div class="form-row">
+                <label for="homepage-hero-line-input">Hero line</label>
+                <input id="homepage-hero-line-input" name="heroLine" type="text" maxlength="220" />
+              </div>
+            </div>
+
+            <div class="two-column-grid">
+              <div class="form-row">
+                <label for="homepage-email-input">Email</label>
+                <input id="homepage-email-input" name="email" type="email" maxlength="160" />
+              </div>
+              <div class="form-row">
+                <label for="homepage-portrait-src-input">Portrait image path or URL</label>
+                <input id="homepage-portrait-src-input" name="portraitSrc" type="text" maxlength="500" />
+                <div class="admin-inline-note">Example: <span class="code-inline">image.jpeg</span>, <span class="code-inline">IMG_1932.jpeg</span>, or a full <span class="code-inline">https://…</span> URL.</div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <label for="homepage-portrait-alt-input">Portrait alt text</label>
+              <input id="homepage-portrait-alt-input" name="portraitAlt" type="text" maxlength="220" />
+            </div>
+
+            <div class="admin-helper">
+              About and collaboration text support plain text, blank lines for paragraphs, markdown-style links like <span class="code-inline">[email me](mailto:you@example.com)</span>, and LaTeX if you want it.
+            </div>
+
+            <div class="section-title" style="border-bottom:0; padding-bottom:0; margin-bottom:10px; font-size:1rem;">Buttons</div>
+
+            <div class="two-column-grid">
+              <div class="auth-box" style="padding:16px; margin:0;">
+                <div class="form-row">
+                  <label for="homepage-primary-label-input">Primary button label</label>
+                  <input id="homepage-primary-label-input" name="primaryButtonLabel" type="text" maxlength="80" />
+                </div>
+                <div class="form-row">
+                  <label for="homepage-primary-url-input">Primary button URL</label>
+                  <input id="homepage-primary-url-input" name="primaryButtonUrl" type="text" maxlength="500" />
+                </div>
+                <div class="form-row checkbox-row" style="margin-bottom:0;">
+                  <label>
+                    <input id="homepage-primary-newtab-input" name="primaryButtonNewTab" type="checkbox" />
+                    Open primary button in a new tab
+                  </label>
+                </div>
+              </div>
+
+              <div class="auth-box" style="padding:16px; margin:0;">
+                <div class="form-row">
+                  <label for="homepage-secondary-label-input">Secondary button label</label>
+                  <input id="homepage-secondary-label-input" name="secondaryButtonLabel" type="text" maxlength="80" />
+                </div>
+                <div class="form-row">
+                  <label for="homepage-secondary-url-input">Secondary button URL</label>
+                  <input id="homepage-secondary-url-input" name="secondaryButtonUrl" type="text" maxlength="500" />
+                </div>
+                <div class="form-row checkbox-row" style="margin-bottom:0;">
+                  <label>
+                    <input id="homepage-secondary-newtab-input" name="secondaryButtonNewTab" type="checkbox" />
+                    Open secondary button in a new tab
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="two-column-grid" style="margin-top: 16px;">
+              <div class="form-row">
+                <label for="homepage-about-heading-input">About heading</label>
+                <input id="homepage-about-heading-input" name="aboutHeading" type="text" maxlength="160" />
+              </div>
+              <div class="form-row">
+                <label for="homepage-collaboration-heading-input">Collaboration heading</label>
+                <input id="homepage-collaboration-heading-input" name="collaborationHeading" type="text" maxlength="160" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <label for="homepage-about-body-input">About text</label>
+              <textarea id="homepage-about-body-input" name="aboutBody" class="editor-textarea compact"></textarea>
+            </div>
+
+            <div class="form-row">
+              <label for="homepage-collaboration-body-input">Collaboration text</label>
+              <textarea id="homepage-collaboration-body-input" name="collaborationBody" class="editor-textarea compact"></textarea>
+            </div>
+
+            <div class="form-row">
+              <label for="homepage-footer-text-input">Footer text</label>
+              <input id="homepage-footer-text-input" name="footerText" type="text" maxlength="220" />
+            </div>
+
+            <div class="admin-code-card">
+              Template example for the collaboration text:
+              <pre>I’m happy to talk about probability, random matrices, convex geometry, or related projects.
+
+You can reach me at [your.email@example.com](mailto:your.email@example.com).</pre>
+            </div>
+
+            <div class="buttons" style="margin-top:16px;">
+              <button class="primary" id="save-homepage-button" type="submit">Save homepage</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="auth-box">
+          <div class="preview-shell">
+            <div class="admin-panel-heading" style="margin-bottom:0;">
+              <div>
+                <h3 style="margin-bottom: 6px;">Live preview</h3>
+                <p class="muted small">Rendered with the same homepage component used on the public page.</p>
+              </div>
+            </div>
+            <div class="preview-frame">
+              <div class="homepage-preview" id="homepage-preview"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./homepage-admin.js"></script>
+</body>
+</html>

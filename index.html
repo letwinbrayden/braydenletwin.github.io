@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Brayden Letwin</title>
+  <script src="publications-mathjax-config.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
   <style>
     :root {
       --bg: #f8f8f6;
@@ -18,6 +20,10 @@
 
     * {
       box-sizing: border-box;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
     }
 
     body {
@@ -134,8 +140,12 @@
       font-weight: 600;
     }
 
-    .section p {
-      margin: 0;
+    .rich-text .home-block {
+      margin: 0 0 1em;
+    }
+
+    .rich-text .home-block:last-child {
+      margin-bottom: 0;
     }
 
     .footer {
@@ -143,6 +153,14 @@
       color: var(--muted);
       font-size: 0.95rem;
       margin-top: 22px;
+    }
+
+    .empty-state {
+      padding: 22px;
+      border: 1px dashed var(--line);
+      border-radius: 14px;
+      color: var(--muted);
+      background: #fcfcfc;
     }
 
     @media (max-width: 700px) {
@@ -190,42 +208,10 @@
   </style>
 </head>
 <body>
-  <main class="page">
-    <section class="card hero">
-      <img src="image.jpeg" alt="Brayden Letwin" class="portrait" />
-
-      <div>
-        <h1>Brayden Letwin</h1>
-        <p class="subtitle">Mathematics • Theoretical Computer Science</p>
-
-        <div class="meta">
-          <div>PhD Mathematics, University of Washington</div>
-          <div><a href="mailto:letwin@uw.edu">letwin@uw.edu</a></div>
-        </div>
-
-        <div class="buttons">
-          <a class="button primary" href="CV.pdf" target="_blank" rel="noopener noreferrer">Curriculum Vitae</a>
-          <a class="button" href="publications.html">Publications</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="card section">
-      <h2>About</h2>
-      <p>
-        I am an undergraduate student at the University of Alberta studying probability. I will enter the PhD program in mathematics at the University of Washington in September 2026. My interests largely include convex geometry, random matrices, theoretical computer science and other high-dimensional/random phenomena.
-      </p>
-    </section>
-    <section class="card section">
-      <h2>Collaboration (send me an email!)</h2>
-      <p>
-      Interested in working together on a project? Feel free to send me an email at
-      <a href="mailto:letwin@uw.edu">letwin@uw.edu</a> — I’m always very happy to collaborate on any projects in probability, convex geometry, random matrix theory, combinatorics, theoretical-cs, analytic number theory :-).
-      </p>
-    </section>
-    <div class="footer">
-      Last updated April 2026
-    </div>
+  <main class="page" id="homepage-root">
+    <div class="empty-state">Loading homepage…</div>
   </main>
+
+  <script type="module" src="./homepage-page.js"></script>
 </body>
 </html>
