@@ -1,5 +1,5 @@
 import { getSupabase } from './supabase-client.js';
-import { fetchProfile } from './blog-data.js';
+import { fetchProfile } from './auth-data.js';
 import {
   deletePublication,
   fetchAllPublicationsForAdmin,

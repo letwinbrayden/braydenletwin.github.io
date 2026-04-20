@@ -1,36 +1,19 @@
-# Blog + accounts + comments for your site
+# Publications-managed site
 
-This package keeps your site visually simple, but now adds a real Supabase-backed blog system:
+This version removes the blog and keeps the site focused on your homepage plus a Supabase-backed publications page.
 
-- a blog landing page,
-- individual blog post pages,
-- a protected admin editor,
-- email/password account creation,
-- sign-in/sign-out,
-- per-post comments,
-- deletion of your own comments.
+## Main files
 
-## Files
-
-- `index.html` — updated home page with a blog section
-- `blog.html` — blog archive page
-- `post.html` — single post page with auth + comments
-- `admin.html` — protected blog editor page
-- `publications-admin.html` — protected publications editor page
+- `index.html` — homepage
+- `publications.html` — public publications page
+- `publications-admin.html` — protected publications editor
+- `admin.html` — shortcut that redirects to `publications-admin.html`
 - `publications-data.js` / `publications-page.js` / `publications-shared.js` — publications data + rendering
 - `publications-bootstrap.js` — bootstrap copy of your current publications page
+- `auth-data.js` — admin profile lookup helper
+- `supabase-config.js` — fill in your project URL and anon/publishable key
+- `supabase-setup.sql` — database tables, trigger, and RLS policies for profiles + publications
 - `supabase-publications-seed.sql` — optional one-shot seed for the publications table
-- `styles.css` — shared styling for all pages
-- `blog-data.js` — reads and writes blog posts from Supabase
-- `home.js`, `blog.js`, `post.js`, `admin.js` — page logic
-- `supabase-config.js` — fill in your project URL and key
-- `supabase-setup.sql` — database tables, trigger, and RLS policies
-
-## What changed from the earlier version
-
-Posts no longer live in `posts.js`.
-
-They now live in the `public.posts` table in Supabase, and `admin.html` is a real browser-based editor for creating, editing, publishing, and deleting posts.
 
 ## Supabase setup
 
@@ -42,7 +25,7 @@ They now live in the `public.posts` table in Supabase, and `admin.html` is a rea
 
 ## Make yourself an admin
 
-First create your account by signing up on any blog post page after the site is live, or create the user in Supabase Auth.
+First create your account from `publications-admin.html`, or create the user in Supabase Auth.
 
 Then run:
 
@@ -57,36 +40,18 @@ You can find your UUID in:
 - Supabase Dashboard → Authentication → Users, or
 - the `public.profiles` table.
 
-After that, visit `admin.html`.
-
-## How to create a post
-
-1. Open `admin.html`.
-2. Sign in with your admin account.
-3. Click **New post**.
-4. Fill in title, slug, excerpt, content HTML, and optionally read time.
-5. Check **Publish this post** when ready.
-6. Save.
-
-Published posts appear automatically on:
-
-- `index.html`
-- `blog.html`
-- `post.html?slug=your-post-slug`
-
 ## Publications editor
 
-The publications page is now Supabase-backed too.
+The publications page is Supabase-backed.
 
-1. Re-run `supabase-setup.sql` so the new `public.publications` table and policies exist.
-2. Open `publications-admin.html`.
-3. Sign in with the same admin account you use for the blog editor.
-4. Either:
+1. Open `publications-admin.html`.
+2. Sign in with your admin account.
+3. Either:
    - click **Import current page** once to copy the existing hard-coded publications into Supabase, or
    - run `supabase-publications-seed.sql` in Supabase SQL Editor.
-5. After that, add and edit publications from the browser.
+4. After that, add and edit publications from the browser.
 
-The publications editor supports the same style you already use on the site:
+The editor supports the same style you already use on the site:
 
 - **Title HTML / LaTeX**
 - **Metadata lines** (one line per row, HTML allowed)
@@ -97,25 +62,12 @@ The publications editor supports the same style you already use on the site:
 
 Math is rendered on the public page and in the admin preview through MathJax.
 
-## Notes about post content
+## Notes
 
-The editor currently stores the body as HTML in `content_html`.
-
-That means you can paste content like:
-
-```html
-<p>This is a paragraph.</p>
-<blockquote>A quoted remark.</blockquote>
-<ul><li>Point one</li><li>Point two</li></ul>
-```
-
-## Important note about slugs
-
-Comments are tied to the post slug. Try not to change a slug after comments exist.
-
-## Important note about email confirmations
-
-If email confirmation is enabled, users usually need to confirm their email before they can sign in the first time.
+- The homepage no longer links to a blog.
+- `admin.html` now serves only as a shortcut to the publications editor.
+- `blog.html` and `post.html` now redirect to the homepage so old links do not break badly.
+- If you previously used the blog-enabled version, the old blog tables in Supabase are simply no longer used by this site.
 
 ## Local testing
 
@@ -128,12 +80,3 @@ python3 -m http.server 8000
 ```
 
 Then open `http://localhost:8000`.
-
-## Existing files
-
-Keep your own copies of:
-
-- `image.jpeg`
-- `CV.pdf`
-
-The publications page is now editable through `publications-admin.html`, so you no longer need to hand-edit `publications.html` for new entries.
