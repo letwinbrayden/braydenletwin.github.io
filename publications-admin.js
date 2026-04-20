@@ -100,9 +100,10 @@ function setButtonBusy(button, busy, labelWhenIdle, labelWhenBusy) {
   button.textContent = busy ? labelWhenBusy : labelWhenIdle;
 }
 
-function getDisplayPositionForId(publicationId) {
-  const index = state.publications.findIndex((publication) => publication.id === publicationId);
-  return index >= 0 ? index + 1 : 0;
+function getDisplayOrderValue(publication) {
+  const value = Number(publication?.sortOrder ?? 0);
+  if (!Number.isFinite(value)) return 1;
+  return Math.max(1, Math.round(value));
 }
 
 function clampRequestedPosition(value, totalCount) {
@@ -124,7 +125,8 @@ function getRequestedPosition() {
 function buildOrderedPublicationList(savedPublication, requestedPosition) {
   const remaining = state.publications.filter((publication) => publication.id !== savedPublication.id);
   const ordered = [...remaining];
-  const insertionIndex = Math.min(Math.max(requestedPosition - 1, 0), ordered.length);
+  const totalCount = ordered.length + 1;
+  const insertionIndex = Math.min(Math.max(totalCount - requestedPosition, 0), ordered.length);
   ordered.splice(insertionIndex, 0, savedPublication);
   return ordered;
 }
@@ -196,13 +198,13 @@ function resetForm() {
   schedulePreviewRender();
 }
 
-function fillForm(publication, position = getDisplayPositionForId(publication.id)) {
+function fillForm(publication) {
   state.editingId = publication.id;
   state.slugTouched = true;
   inputs.id.value = publication.id || '';
   inputs.titleHtml.value = sourceTextFromStoredValue(publication.titleHtml);
   inputs.slug.value = publication.slug || '';
-  inputs.sortOrder.value = String(position || 1);
+  inputs.sortOrder.value = String(getDisplayOrderValue(publication));
   inputs.metaLines.value = formatLinesTextarea(publication.metaLines.map(sourceTextFromStoredValue));
   inputs.badges.value = formatLinesTextarea(publication.badges.map(sourceTextFromStoredValue));
   inputs.links.value = formatLinksTextarea(publication.links);
@@ -588,7 +590,7 @@ async function handleSavePublication(event) {
     await loadPublications();
 
     const refreshed = state.publications.find((publication) => publication.id === saved.id) || saved;
-    fillForm(refreshed, getDisplayPositionForId(refreshed.id));
+    fillForm(refreshed);
     setNotice(payload.id ? 'Publication updated.' : 'Publication created.', 'success');
   } catch (error) {
     setNotice(formatError(error, 'Could not save the publication.'), 'error');

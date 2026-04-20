@@ -11,27 +11,15 @@ function compareTimestampsDescending(a, b) {
   return timeB - timeA;
 }
 
-function usesNaturalPositionOrder(publications) {
-  const values = (publications || [])
-    .map((publication) => Number(publication?.sortOrder ?? publication?.sort_order ?? 0))
-    .filter((value) => Number.isInteger(value) && value >= 1);
-
-  if (values.length === 0) return true;
-
-  const maxValue = Math.max(...values);
-  return maxValue <= Math.max(values.length * 10, 20);
-}
-
 function sortPublicationsForDisplay(publications) {
   const normalized = (publications || []).map(normalizePublication);
-  const naturalAscending = usesNaturalPositionOrder(normalized);
 
   return normalized.sort((a, b) => {
     const orderA = Number(a.sortOrder || 0);
     const orderB = Number(b.sortOrder || 0);
 
     if (orderA !== orderB) {
-      return naturalAscending ? orderA - orderB : orderB - orderA;
+      return orderB - orderA;
     }
 
     return compareTimestampsDescending(a, b);
@@ -151,11 +139,13 @@ export async function setPublicationOrder(publicationsInDisplayOrder) {
     .map(normalizePublication)
     .filter((publication) => publication.id);
 
+  const totalCount = ordered.length;
+
   for (let index = 0; index < ordered.length; index += 1) {
     const publication = ordered[index];
     const { error } = await supabase
       .from('publications')
-      .update({ sort_order: index + 1 })
+      .update({ sort_order: totalCount - index })
       .eq('id', publication.id);
 
     if (error) throw error;

@@ -1,4 +1,4 @@
-insert into public.publications (slug, title_html, meta_lines, badges, links, abstract_html, sort_order, is_published)
+(slug, title_html, meta_lines, badges, links, abstract_html, sort_order, is_published)
 values (
   'on-the-number-of-real-valued-roots-of-littlewood-polynomials',
   'On the number of real-valued roots of Littlewood polynomials',
@@ -6,7 +6,7 @@ values (
   '["In preparation"]'::jsonb,
   '[]'::jsonb,
   'Abstract to appear.',
-  1,
+  7,
   true
 )
 on conflict (slug) do update
@@ -27,7 +27,7 @@ values (
   '["In preparation"]'::jsonb,
   '[]'::jsonb,
   'Abstract to appear.',
-  2,
+  6,
   true
 )
 on conflict (slug) do update
@@ -55,7 +55,7 @@ with $\varepsilon_k\in\{-1, 1\}$. Let $(\varepsilon_k)_{k \ge 0}$ be i.i.d. Rade
 \[
 \lim_{n \to \infty}\frac{N_n(\mathbb{D})}{n} = \frac12.
 \]',
-  3,
+  5,
   true
 )
 on conflict (slug) do update
@@ -105,7 +105,7 @@ we prove
 \ll \varepsilon+e^{-\Omega(n)}
 \]
 for all $\varepsilon\ge 0$, where the implied constants depend only on $K$.',
-  5,
+  3,
   true
 )
 on conflict (slug) do update
@@ -136,7 +136,7 @@ probability of a certain Gaussian process. In particular, almost surely,
 \liminf_{n\to\infty} \frac{\log(\max_{x\in[-1,1]}|f_n(x)|/\sqrt n)}{(\log\log n)^{1/3}}
 = -\Big(\frac{3\pi^2}{4}\Big)^{1/3}.
 \]',
-  6,
+  2,
   true
 )
 on conflict (slug) do update
@@ -160,7 +160,7 @@ values (
 hyperplane through the centroid of the body. We provide a generalization of this inequality for hyperplanes
 that do not necessarily contain the centroid. As an application, we obtain a sharp inequality that compares
 sections of a convex body to the maximal section parallel to it.',
-  7,
+  1,
   true
 )
 on conflict (slug) do update

@@ -355,7 +355,7 @@
       <div class="kicker">Editor</div>
       <h1 style="margin-bottom: 12px;">Protected publications editor</h1>
       <p class="muted" style="margin: 0;">
-        Sign in with your admin account to create, edit, publish, and reorder publications. The editor is text-and-LaTeX only, and the site generates the publication card layout automatically for you.
+        Sign in with your admin account to create, edit, publish, and reorder publications. The editor is text-and-LaTeX only, and the site generates the publication card layout automatically for you. Higher display-order numbers appear nearer the top.
       </p>
     </section>
 
@@ -384,7 +384,7 @@
           <div class="admin-panel-heading">
             <div>
               <h3>Entries</h3>
-              <p class="muted small">Use simple positions: 1 appears first, 2 appears second, and so on.</p>
+              <p class="muted small">Higher numbers appear nearer the top. For example, if you have 8 entries, use 8 for the top item and 1 for the bottom item.</p>
             </div>
           </div>
           <div id="admin-publication-list" class="admin-publication-list" aria-live="polite"></div>
@@ -419,8 +419,8 @@
             <div class="order-grid" style="margin-top:14px;">
               <div class="form-row" style="margin-bottom:0;">
                 <label for="publication-order-input">Display order</label>
-                <input id="publication-order-input" name="sortOrder" type="number" min="1" step="1" placeholder="1" />
-                <div class="admin-inline-note">Use 1 for the first entry, 2 for the second, 3 for the third, and so on.</div>
+                <input id="publication-order-input" name="sortOrder" type="number" min="1" step="1" placeholder="8" />
+                <div class="admin-inline-note">Higher numbers appear nearer the top. For example, if you have 8 entries, use 8 for the top entry, 7 for the next one, and 1 for the bottom entry.</div>
               </div>
               <button class="secondary" id="reset-editor-button" type="button">Reset editor</button>
             </div>
