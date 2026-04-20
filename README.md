@@ -80,3 +80,8 @@ python3 -m http.server 8000
 ```
 
 Then open `http://localhost:8000`.
+
+
+## Math support
+
+The publications page and admin preview use MathJax with a broader TeX package set preloaded (including AMS, mathtools, physics, mhchem, upgreek, units, and related packages). Common analysis/probability macros are pre-defined, and `\le` / `\ge` are mapped to the slanted variants.

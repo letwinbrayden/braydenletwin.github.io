@@ -8,15 +8,8 @@
   <meta name="description" content="Protected publications editor for Brayden Letwin." />
   <link rel="stylesheet" href="styles.css" />
 
-  <script>
-    window.MathJax = {
-      tex: {
-        inlineMath: { '[+]': [['$', '$']] },
-        displayMath: [['\\[', '\\]'], ['$$', '$$']],
-      },
-    };
-  </script>
-  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
+  <script src="publications-mathjax-config.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
 
   <style>
     .admin-status-grid {
@@ -398,7 +391,7 @@
           <div class="admin-panel-heading">
             <div>
               <h3 id="editor-heading">Create publication</h3>
-              <p class="muted small">The public page keeps the current card layout and MathJax rendering.</p>
+              <p class="muted small">The public page keeps the current card layout and MathJax rendering. Use <code>$...$</code>, <code>\(...\)</code>, or <code>\[...\]</code> for math. Common AMS, mathtools, physics, mhchem, upgreek, units, and related packages are preloaded, and <code>\le</code>/<code>\ge</code> use the slanted variants.</p>
             </div>
             <a class="button secondary" id="preview-link" href="publications.html" target="_blank" rel="noopener noreferrer">Open publications page</a>
           </div>
