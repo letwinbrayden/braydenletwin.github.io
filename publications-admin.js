@@ -57,6 +57,7 @@ const state = {
   editingId: null,
   slugTouched: false,
   previewTimer: null,
+  renderScheduled: false,
 };
 
 function formatError(error, fallback) {
@@ -371,6 +372,21 @@ function renderSetupMessage(title, body) {
   `);
 }
 
+function scheduleSessionRender(delay = 0) {
+  if (state.renderScheduled) return;
+  state.renderScheduled = true;
+
+  window.setTimeout(async () => {
+    try {
+      await renderForCurrentSession();
+    } catch (error) {
+      renderSetupMessage('Could not load editor.', escapeHtml(formatError(error, 'Unknown error.')));
+    } finally {
+      state.renderScheduled = false;
+    }
+  }, delay);
+}
+
 async function loadPublications() {
   try {
     state.publications = await fetchAllPublicationsForAdmin();
@@ -478,7 +494,7 @@ async function handleSignUp(event) {
 
   if (data.session) {
     setInlineNotice('admin-signup-notice', 'Account created and signed in. If this is your editor account, mark it as admin in Supabase and refresh.', 'success');
-    await renderForCurrentSession();
+    scheduleSessionRender();
     return;
   }
 
@@ -506,7 +522,7 @@ async function handleSignIn(event) {
     return;
   }
 
-  await renderForCurrentSession();
+  scheduleSessionRender();
 }
 
 async function handleSignOut() {
@@ -517,7 +533,7 @@ async function handleSignOut() {
     return;
   }
   state.editingId = null;
-  await renderForCurrentSession();
+  scheduleSessionRender();
 }
 
 async function handleSavePublication(event) {
@@ -621,8 +637,10 @@ refreshButton?.addEventListener('click', async () => {
 importButton?.addEventListener('click', handleImportBootstrap);
 signOutButton?.addEventListener('click', handleSignOut);
 
-supabase?.auth.onAuthStateChange(async () => {
-  await renderForCurrentSession();
+supabase?.auth.onAuthStateChange(() => {
+  window.setTimeout(() => {
+    scheduleSessionRender();
+  }, 0);
 });
 
-await renderForCurrentSession();
+scheduleSessionRender();
