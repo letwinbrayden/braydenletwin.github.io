@@ -59,7 +59,7 @@
     argmin: '{\\operatorname*{arg\\,min}}',
     abs: ['\\left\\lvert #1 \\right\\rvert', 1],
     norm: ['\\left\\lVert #1 \\right\\rVert', 1],
-    ip: ['\\left\\langle #1, #2 \\right\\rangle', 2],
+    inner: ['\\left\\langle #1, #2 \\right\\rangle', 2],
     set: ['\\left\\{ #1 \\right\\}', 1],
     paren: ['\\left( #1 \\right)', 1],
     brac: ['\\left[ #1 \\right]', 1],
