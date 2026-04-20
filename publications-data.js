@@ -5,8 +5,41 @@ import { normalizePublication } from './publications-shared.js';
 const supabase = getSupabase();
 const SELECT_COLUMNS = 'id, slug, title_html, meta_lines, badges, links, abstract_html, sort_order, is_published, created_at, updated_at';
 
+function compareTimestampsDescending(a, b) {
+  const timeA = new Date(a?.updatedAt || a?.createdAt || 0).getTime();
+  const timeB = new Date(b?.updatedAt || b?.createdAt || 0).getTime();
+  return timeB - timeA;
+}
+
+function usesNaturalPositionOrder(publications) {
+  const values = (publications || [])
+    .map((publication) => Number(publication?.sortOrder ?? publication?.sort_order ?? 0))
+    .filter((value) => Number.isInteger(value) && value >= 1);
+
+  if (values.length === 0) return true;
+
+  const maxValue = Math.max(...values);
+  return maxValue <= Math.max(values.length * 10, 20);
+}
+
+function sortPublicationsForDisplay(publications) {
+  const normalized = (publications || []).map(normalizePublication);
+  const naturalAscending = usesNaturalPositionOrder(normalized);
+
+  return normalized.sort((a, b) => {
+    const orderA = Number(a.sortOrder || 0);
+    const orderB = Number(b.sortOrder || 0);
+
+    if (orderA !== orderB) {
+      return naturalAscending ? orderA - orderB : orderB - orderA;
+    }
+
+    return compareTimestampsDescending(a, b);
+  });
+}
+
 function getBootstrapPublications() {
-  return BOOTSTRAP_PUBLICATIONS.map(normalizePublication);
+  return sortPublicationsForDisplay(BOOTSTRAP_PUBLICATIONS);
 }
 
 function toPayload(publication) {
@@ -19,7 +52,7 @@ function toPayload(publication) {
     badges: normalized.badges,
     links: normalized.links,
     abstract_html: normalized.abstractHtml,
-    sort_order: normalized.sortOrder,
+    sort_order: Math.max(1, Number(normalized.sortOrder || 1)),
     is_published: normalized.isPublished,
   };
 }
@@ -38,13 +71,12 @@ export async function fetchPublishedPublications({ fallbackToBootstrap = true } 
       .from('publications')
       .select(SELECT_COLUMNS)
       .eq('is_published', true)
-      .order('sort_order', { ascending: false })
       .order('updated_at', { ascending: false })
       .order('created_at', { ascending: false });
 
     if (error) throw error;
 
-    const publications = (data || []).map(normalizePublication);
+    const publications = sortPublicationsForDisplay(data || []);
     if (publications.length > 0 || !fallbackToBootstrap) {
       return publications;
     }
@@ -71,12 +103,11 @@ export async function fetchAllPublicationsForAdmin() {
   const { data, error } = await supabase
     .from('publications')
     .select(SELECT_COLUMNS)
-    .order('sort_order', { ascending: false })
     .order('updated_at', { ascending: false })
     .order('created_at', { ascending: false });
 
   if (error) throw error;
-  return (data || []).map(normalizePublication);
+  return sortPublicationsForDisplay(data || []);
 }
 
 export async function savePublication(publication) {
@@ -111,6 +142,26 @@ export async function savePublication(publication) {
   return normalizePublication(data);
 }
 
+export async function setPublicationOrder(publicationsInDisplayOrder) {
+  if (!supabase) {
+    throw new Error('Supabase is not configured.');
+  }
+
+  const ordered = (publicationsInDisplayOrder || [])
+    .map(normalizePublication)
+    .filter((publication) => publication.id);
+
+  for (let index = 0; index < ordered.length; index += 1) {
+    const publication = ordered[index];
+    const { error } = await supabase
+      .from('publications')
+      .update({ sort_order: index + 1 })
+      .eq('id', publication.id);
+
+    if (error) throw error;
+  }
+}
+
 export async function deletePublication(id) {
   if (!supabase) {
     throw new Error('Supabase is not configured.');
@@ -132,5 +183,5 @@ export async function importBootstrapPublications() {
     .select(SELECT_COLUMNS);
 
   if (error) throw error;
-  return (data || []).map(normalizePublication);
+  return sortPublicationsForDisplay(data || []);
 }

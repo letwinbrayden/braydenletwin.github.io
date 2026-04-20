@@ -5,6 +5,7 @@ import {
   fetchAllPublicationsForAdmin,
   importBootstrapPublications,
   savePublication,
+  setPublicationOrder,
 } from './publications-data.js';
 import {
   escapeHtml,
@@ -99,13 +100,33 @@ function setButtonBusy(button, busy, labelWhenIdle, labelWhenBusy) {
   button.textContent = busy ? labelWhenBusy : labelWhenIdle;
 }
 
-function getNextSortOrder() {
-  const currentMax = state.publications.reduce((maxValue, publication) => {
-    const value = Number(publication.sortOrder || 0);
-    return Number.isFinite(value) ? Math.max(maxValue, value) : maxValue;
-  }, 0);
+function getDisplayPositionForId(publicationId) {
+  const index = state.publications.findIndex((publication) => publication.id === publicationId);
+  return index >= 0 ? index + 1 : 0;
+}
 
-  return currentMax + 10 || 10;
+function clampRequestedPosition(value, totalCount) {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) return Math.max(totalCount, 1);
+  const rounded = Math.round(parsed);
+  return Math.min(Math.max(rounded, 1), Math.max(totalCount, 1));
+}
+
+function getNextSortOrder() {
+  return state.publications.length + 1;
+}
+
+function getRequestedPosition() {
+  const totalCount = state.publications.length + (state.editingId ? 0 : 1);
+  return clampRequestedPosition(inputs.sortOrder.value || getNextSortOrder(), totalCount);
+}
+
+function buildOrderedPublicationList(savedPublication, requestedPosition) {
+  const remaining = state.publications.filter((publication) => publication.id !== savedPublication.id);
+  const ordered = [...remaining];
+  const insertionIndex = Math.min(Math.max(requestedPosition - 1, 0), ordered.length);
+  ordered.splice(insertionIndex, 0, savedPublication);
+  return ordered;
 }
 
 function updatePreviewLink() {
@@ -140,7 +161,7 @@ function getDraftPublication() {
     id: inputs.id.value || null,
     titleHtml: inputs.titleHtml.value.trim(),
     slug,
-    sortOrder: Number(inputs.sortOrder.value || 0),
+    sortOrder: getRequestedPosition(),
     metaLines: parseLinesTextarea(inputs.metaLines.value),
     badges: parseLinesTextarea(inputs.badges.value),
     links: parseLinksTextarea(inputs.links.value),
@@ -155,7 +176,7 @@ async function renderPreview() {
 
   previewEl.innerHTML = '';
   if (!draft.titleHtml && !draft.abstractHtml) {
-    previewEl.innerHTML = '<div class="empty-state">Start typing to preview the publication card.</div>';
+    previewEl.innerHTML = '<div class="empty-state">Start typing to preview the template publication card.</div>';
     return;
   }
 
@@ -175,13 +196,13 @@ function resetForm() {
   schedulePreviewRender();
 }
 
-function fillForm(publication) {
+function fillForm(publication, position = getDisplayPositionForId(publication.id)) {
   state.editingId = publication.id;
   state.slugTouched = true;
   inputs.id.value = publication.id || '';
   inputs.titleHtml.value = sourceTextFromStoredValue(publication.titleHtml);
   inputs.slug.value = publication.slug || '';
-  inputs.sortOrder.value = String(publication.sortOrder ?? 0);
+  inputs.sortOrder.value = String(position || 1);
   inputs.metaLines.value = formatLinesTextarea(publication.metaLines.map(sourceTextFromStoredValue));
   inputs.badges.value = formatLinesTextarea(publication.badges.map(sourceTextFromStoredValue));
   inputs.links.value = formatLinksTextarea(publication.links);
@@ -201,14 +222,15 @@ function renderPublicationList() {
     return;
   }
 
-  state.publications.forEach((publication) => {
+  state.publications.forEach((publication, index) => {
+    const position = index + 1;
     const card = document.createElement('article');
     card.className = 'admin-publication-card';
 
     const meta = document.createElement('div');
     meta.className = 'admin-publication-meta';
     const updatedLabel = publication.updatedAt ? formatMonthYear(publication.updatedAt) : 'No update timestamp';
-    meta.textContent = `${publication.isPublished ? 'Published' : 'Draft'} • Order ${publication.sortOrder} • ${updatedLabel}`;
+    meta.textContent = `${publication.isPublished ? 'Published' : 'Draft'} • Position ${position} • ${updatedLabel}`;
 
     const title = document.createElement('h4');
     title.textContent = stripHtml(publication.titleHtml) || '(Untitled publication)';
@@ -232,7 +254,7 @@ function renderPublicationList() {
     editButton.className = 'secondary';
     editButton.textContent = 'Edit';
     editButton.addEventListener('click', () => {
-      fillForm(publication);
+      fillForm(publication, position);
       setNotice('');
     });
 
@@ -542,6 +564,8 @@ async function handleSavePublication(event) {
   setNotice('');
 
   const payload = getDraftPublication();
+  const requestedPosition = payload.sortOrder;
+
   if (!payload.slug) {
     setNotice('Please enter a title or slug.', 'error');
     inputs.slug.focus();
@@ -555,12 +579,16 @@ async function handleSavePublication(event) {
   }
 
   inputs.slug.value = payload.slug;
+  inputs.sortOrder.value = String(requestedPosition);
   setButtonBusy(savePublicationButton, true, 'Save publication', 'Saving…');
 
   try {
     const saved = await savePublication(payload);
+    await setPublicationOrder(buildOrderedPublicationList(saved, requestedPosition));
     await loadPublications();
-    fillForm(saved);
+
+    const refreshed = state.publications.find((publication) => publication.id === saved.id) || saved;
+    fillForm(refreshed, getDisplayPositionForId(refreshed.id));
     setNotice(payload.id ? 'Publication updated.' : 'Publication created.', 'success');
   } catch (error) {
     setNotice(formatError(error, 'Could not save the publication.'), 'error');
@@ -602,7 +630,12 @@ inputs.slug?.addEventListener('input', () => {
   schedulePreviewRender();
 });
 
-['sortOrder', 'metaLines', 'badges', 'links', 'abstractHtml'].forEach((key) => {
+inputs.sortOrder?.addEventListener('input', () => {
+  inputs.sortOrder.value = String(getRequestedPosition());
+  schedulePreviewRender();
+});
+
+['metaLines', 'badges', 'links', 'abstractHtml'].forEach((key) => {
   inputs[key]?.addEventListener('input', schedulePreviewRender);
 });
 

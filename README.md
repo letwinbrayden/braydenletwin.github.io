@@ -58,7 +58,7 @@ The editor now lets you type plain text and LaTeX only; the publication card HTM
 - **Badges** (one per line)
 - **Links** in the format `Label | URL`
 - **Abstract text / LaTeX**
-- **Display order** so you can keep entries in the order you want
+- **Display order** as a simple 1-based position (1 = first, 2 = second, and so on)
 
 Math is rendered on the public page and in the admin preview through MathJax.
 
@@ -85,3 +85,6 @@ Then open `http://localhost:8000`.
 ## Math support
 
 The publications page and admin preview use MathJax with a broader TeX package set preloaded (including AMS, mathtools, physics, mhchem, upgreek, units, and related packages). Common analysis/probability macros are pre-defined, and `\le` / `\ge` are mapped to the slanted variants.
+
+
+If you previously used the older 100/200/300-style ordering, click **Import current page** once or save any entry once after deploying this version; the editor will switch everything back to simple 1-based positions.

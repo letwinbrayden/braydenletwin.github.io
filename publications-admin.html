@@ -354,7 +354,7 @@
       <div class="kicker">Editor</div>
       <h1 style="margin-bottom: 12px;">Protected publications editor</h1>
       <p class="muted" style="margin: 0;">
-        Sign in with your admin account to create, edit, publish, and reorder publications. Enter plain text and LaTeX only—the publication card HTML is generated automatically for you.
+        Sign in with your admin account to create, edit, publish, and reorder publications. The editor is text-and-LaTeX only, and the site generates the publication card layout automatically for you.
       </p>
     </section>
 
@@ -383,7 +383,7 @@
           <div class="admin-panel-heading">
             <div>
               <h3>Entries</h3>
-              <p class="muted small">Higher order numbers appear first.</p>
+              <p class="muted small">Use simple positions: 1 appears first, 2 appears second, and so on.</p>
             </div>
           </div>
           <div id="admin-publication-list" class="admin-publication-list" aria-live="polite"></div>
@@ -393,7 +393,7 @@
           <div class="admin-panel-heading">
             <div>
               <h3 id="editor-heading">Create publication</h3>
-              <p class="muted small">The public page keeps the current card layout and MathJax rendering. Just enter plain text and LaTeX here—no HTML tags are needed. Use <code>$...$</code>, <code>\(...\)</code>, or <code>\[...\]</code> for math. Common AMS, mathtools, physics, mhchem, upgreek, units, and related packages are preloaded, and <code>\le</code>/<code>\ge</code> use the slanted variants.</p>
+              <p class="muted small">Enter plain text and LaTeX only—no HTML tags are needed. The public page keeps the same card layout and MathJax rendering automatically. Use <code>$...$</code>, <code>\(...\)</code>, or <code>\[...\]</code> for math. Common AMS, mathtools, physics, mhchem, upgreek, units, and related packages are preloaded, and <code>\le</code>/<code>\ge</code> use the slanted variants.</p>
             </div>
             <a class="button secondary" id="preview-link" href="publications.html" target="_blank" rel="noopener noreferrer">Open publications page</a>
           </div>
@@ -403,14 +403,14 @@
 
             <div class="form-row">
               <label for="publication-title-input">Title text / LaTeX</label>
-              <textarea id="publication-title-input" name="titleHtml" class="editor-textarea compact" required></textarea>
+              <textarea id="publication-title-input" name="titleHtml" class="editor-textarea compact" placeholder="Example title with $L_p$ centroid bodies" required></textarea>
             </div>
 
             <div class="slug-grid">
               <div class="form-row" style="margin-bottom:0;">
                 <label for="publication-slug-input">Slug</label>
-                <input id="publication-slug-input" name="slug" type="text" maxlength="160" required />
-                <div class="admin-inline-note">Used for links like <span class="code-inline">publications.html#your-slug</span>.</div>
+                <input id="publication-slug-input" name="slug" type="text" maxlength="160" placeholder="example-title-with-lp-centroid-bodies" required />
+                <div class="admin-inline-note">Used for links like <span class="code-inline">publications.html#your-slug</span>. You can generate it from the title, then leave it alone.</div>
               </div>
               <button class="secondary slug-button" id="generate-slug-button" type="button">Generate slug</button>
             </div>
@@ -418,27 +418,27 @@
             <div class="order-grid" style="margin-top:14px;">
               <div class="form-row" style="margin-bottom:0;">
                 <label for="publication-order-input">Display order</label>
-                <input id="publication-order-input" name="sortOrder" type="number" step="1" />
-                <div class="admin-inline-note">Larger numbers show nearer the top.</div>
+                <input id="publication-order-input" name="sortOrder" type="number" min="1" step="1" placeholder="1" />
+                <div class="admin-inline-note">Use 1 for the first entry, 2 for the second, 3 for the third, and so on.</div>
               </div>
               <button class="secondary" id="reset-editor-button" type="button">Reset editor</button>
             </div>
 
             <div class="form-row">
               <label for="publication-meta-input">Metadata lines (text / LaTeX)</label>
-              <textarea id="publication-meta-input" name="metaLines" class="editor-textarea compact"></textarea>
-              <div class="admin-inline-note">One line per row. Example: <span class="code-inline">with Colin Tang</span> or <span class="code-inline">with [Mehtaab Sawhney](https://www.math.columbia.edu/~msawhney/)</span>.</div>
+              <textarea id="publication-meta-input" name="metaLines" class="editor-textarea compact" placeholder="with Coauthor Name&#10;Journal or venue (optional)"></textarea>
+              <div class="admin-inline-note">One line per row. You can also use link syntax like <span class="code-inline">with [Coauthor Name](https://example.com)</span>.</div>
             </div>
 
             <div class="form-row">
               <label for="publication-badges-input">Badges (text / LaTeX)</label>
-              <textarea id="publication-badges-input" name="badges" class="editor-textarea compact"></textarea>
-              <div class="admin-inline-note">One badge per line, e.g. <span class="code-inline">Accepted</span> or <span class="code-inline">To appear on arXiv</span>.</div>
+              <textarea id="publication-badges-input" name="badges" class="editor-textarea compact" placeholder="Preprint&#10;Accepted"></textarea>
+              <div class="admin-inline-note">One badge per line, for example <span class="code-inline">Preprint</span>, <span class="code-inline">Accepted</span>, or <span class="code-inline">To appear</span>.</div>
             </div>
 
             <div class="form-row">
               <label for="publication-links-input">Links</label>
-              <textarea id="publication-links-input" name="links" class="editor-textarea compact"></textarea>
+              <textarea id="publication-links-input" name="links" class="editor-textarea compact" placeholder="PDF | your-paper.pdf&#10;arXiv | https://arxiv.org/abs/0000.00000"></textarea>
               <div class="admin-inline-note">One link per line in the format <span class="code-inline">Label | URL</span>.</div>
             </div>
 
@@ -446,15 +446,35 @@
               Just type plain text and LaTeX. The site generates the publication card HTML automatically, and the preview below uses the same card layout as the public publications page.
             </div>
 
+            <div class="admin-code-card">
+              Template field guide:
+              <pre>• Title: the paper title only
+• Metadata lines: authors, journal, venue, or notes (one per line)
+• Badges: short labels like Preprint or Accepted
+• Links: one line per link as Label | URL
+• Abstract: plain text and LaTeX with blank lines between paragraphs</pre>
+            </div>
+
             <div class="form-row">
               <label for="publication-abstract-input">Abstract text / LaTeX</label>
-              <textarea id="publication-abstract-input" name="abstractHtml" class="editor-textarea" required></textarea>
+              <textarea id="publication-abstract-input" name="abstractHtml" class="editor-textarea" placeholder="Write a short abstract here.&#10;&#10;Use a blank line between paragraphs. Put math in $...$ or \[...\]." required></textarea>
             </div>
 
             <div class="admin-code-card">
-              Example links input:
-              <pre>Paper / notes | WeightedRandomMatrix.pdf
-arXiv | https://arxiv.org/abs/2410.04741</pre>
+              Template example:
+              <pre>Title
+Example title with $L_p$ centroid bodies
+
+Metadata lines
+with [Coauthor Name](https://example.com)
+Journal or venue (optional)
+
+Badges
+Preprint
+
+Links
+PDF | your-paper.pdf
+arXiv | https://arxiv.org/abs/0000.00000</pre>
             </div>
 
             <div class="form-row checkbox-row" style="margin-top:14px;">
