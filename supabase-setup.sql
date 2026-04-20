@@ -188,3 +188,102 @@ create policy "Users can delete their own comments"
   for delete
   to authenticated
   using ((select auth.uid()) = user_id);
+
+create table if not exists public.publications (
+  id uuid primary key default gen_random_uuid(),
+  slug text not null unique check (slug ~ '^[a-z0-9]+(?:-[a-z0-9]+)*$'),
+  title_html text not null check (char_length(trim(title_html)) between 1 and 1000),
+  meta_lines jsonb not null default '[]'::jsonb,
+  badges jsonb not null default '[]'::jsonb,
+  links jsonb not null default '[]'::jsonb,
+  abstract_html text not null check (char_length(trim(abstract_html)) between 1 and 50000),
+  sort_order integer not null default 0,
+  is_published boolean not null default false,
+  created_at timestamptz not null default timezone('utc', now()),
+  updated_at timestamptz not null default timezone('utc', now())
+);
+
+create index if not exists publications_is_published_sort_order_idx
+  on public.publications (is_published, sort_order desc, updated_at desc, created_at desc);
+
+drop trigger if exists publications_set_updated_at on public.publications;
+create trigger publications_set_updated_at
+  before update on public.publications
+  for each row execute procedure public.set_updated_at();
+
+alter table public.publications enable row level security;
+
+revoke all on table public.publications from anon, authenticated;
+grant select on table public.publications to anon, authenticated;
+grant insert, update, delete on table public.publications to authenticated;
+
+drop policy if exists "Public can view published publications" on public.publications;
+drop policy if exists "Admins can view all publications" on public.publications;
+drop policy if exists "Admins can insert publications" on public.publications;
+drop policy if exists "Admins can update publications" on public.publications;
+drop policy if exists "Admins can delete publications" on public.publications;
+
+create policy "Public can view published publications"
+  on public.publications
+  for select
+  using (is_published = true);
+
+create policy "Admins can view all publications"
+  on public.publications
+  for select
+  to authenticated
+  using (
+    exists (
+      select 1
+      from public.profiles
+      where profiles.id = auth.uid()
+        and profiles.is_admin = true
+    )
+  );
+
+create policy "Admins can insert publications"
+  on public.publications
+  for insert
+  to authenticated
+  with check (
+    exists (
+      select 1
+      from public.profiles
+      where profiles.id = auth.uid()
+        and profiles.is_admin = true
+    )
+  );
+
+create policy "Admins can update publications"
+  on public.publications
+  for update
+  to authenticated
+  using (
+    exists (
+      select 1
+      from public.profiles
+      where profiles.id = auth.uid()
+        and profiles.is_admin = true
+    )
+  )
+  with check (
+    exists (
+      select 1
+      from public.profiles
+      where profiles.id = auth.uid()
+        and profiles.is_admin = true
+    )
+  );
+
+create policy "Admins can delete publications"
+  on public.publications
+  for delete
+  to authenticated
+  using (
+    exists (
+      select 1
+      from public.profiles
+      where profiles.id = auth.uid()
+        and profiles.is_admin = true
+    )
+  );

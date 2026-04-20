@@ -16,6 +16,10 @@ This package keeps your site visually simple, but now adds a real Supabase-backe
 - `blog.html` — blog archive page
 - `post.html` — single post page with auth + comments
 - `admin.html` — protected blog editor page
+- `publications-admin.html` — protected publications editor page
+- `publications-data.js` / `publications-page.js` / `publications-shared.js` — publications data + rendering
+- `publications-bootstrap.js` — bootstrap copy of your current publications page
+- `supabase-publications-seed.sql` — optional one-shot seed for the publications table
 - `styles.css` — shared styling for all pages
 - `blog-data.js` — reads and writes blog posts from Supabase
 - `home.js`, `blog.js`, `post.js`, `admin.js` — page logic
@@ -70,6 +74,29 @@ Published posts appear automatically on:
 - `blog.html`
 - `post.html?slug=your-post-slug`
 
+## Publications editor
+
+The publications page is now Supabase-backed too.
+
+1. Re-run `supabase-setup.sql` so the new `public.publications` table and policies exist.
+2. Open `publications-admin.html`.
+3. Sign in with the same admin account you use for the blog editor.
+4. Either:
+   - click **Import current page** once to copy the existing hard-coded publications into Supabase, or
+   - run `supabase-publications-seed.sql` in Supabase SQL Editor.
+5. After that, add and edit publications from the browser.
+
+The publications editor supports the same style you already use on the site:
+
+- **Title HTML / LaTeX**
+- **Metadata lines** (one line per row, HTML allowed)
+- **Badges** (one per line)
+- **Links** in the format `Label | URL`
+- **Abstract HTML / LaTeX**
+- **Display order** so you can keep entries in the order you want
+
+Math is rendered on the public page and in the admin preview through MathJax.
+
 ## Notes about post content
 
 The editor currently stores the body as HTML in `content_html`.
@@ -108,6 +135,5 @@ Keep your own copies of:
 
 - `image.jpeg`
 - `CV.pdf`
-- your existing publications page
 
-This package removes publications links from the updated pages, since you said you already have that page handled separately.
+The publications page is now editable through `publications-admin.html`, so you no longer need to hand-edit `publications.html` for new entries.
