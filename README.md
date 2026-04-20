@@ -51,13 +51,13 @@ The publications page is Supabase-backed.
    - run `supabase-publications-seed.sql` in Supabase SQL Editor.
 4. After that, add and edit publications from the browser.
 
-The editor supports the same style you already use on the site:
+The editor now lets you type plain text and LaTeX only; the publication card HTML is generated automatically. It supports:
 
-- **Title HTML / LaTeX**
-- **Metadata lines** (one line per row, HTML allowed)
+- **Title text / LaTeX**
+- **Metadata lines** (one line per row; optional link syntax like `[Name](https://...)`)
 - **Badges** (one per line)
 - **Links** in the format `Label | URL`
-- **Abstract HTML / LaTeX**
+- **Abstract text / LaTeX**
 - **Display order** so you can keep entries in the order you want
 
 Math is rendered on the public page and in the admin preview through MathJax.

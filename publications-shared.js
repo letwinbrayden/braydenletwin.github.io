@@ -2,6 +2,8 @@ function sleep(ms) {
   return new Promise((resolve) => window.setTimeout(resolve, ms));
 }
 
+const HTML_TAG_PATTERN = /<\/?[a-z][^>]*>/i;
+
 export function escapeHtml(value) {
   return String(value ?? '')
     .replaceAll('&', '&amp;')
@@ -11,16 +13,90 @@ export function escapeHtml(value) {
     .replaceAll("'", '&#039;');
 }
 
-export function stripHtml(value) {
+function decodeHtmlEntities(value) {
   const html = String(value ?? '');
 
   if (typeof document === 'undefined') {
-    return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+    return html
+      .replaceAll('&nbsp;', ' ')
+      .replaceAll('&lt;', '<')
+      .replaceAll('&gt;', '>')
+      .replaceAll('&quot;', '"')
+      .replaceAll('&#039;', "'")
+      .replaceAll('&amp;', '&');
+  }
+
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = html;
+  return textarea.value;
+}
+
+function htmlFragmentToText(value) {
+  const html = String(value ?? '');
+
+  if (typeof document === 'undefined') {
+    return html.replace(/<[^>]*>/g, ' ');
   }
 
   const container = document.createElement('div');
   container.innerHTML = html;
-  return container.textContent?.replace(/\s+/g, ' ').trim() || '';
+  return container.textContent || '';
+}
+
+function containsHtml(value) {
+  return HTML_TAG_PATTERN.test(String(value ?? ''));
+}
+
+function linkifyMarkdown(value) {
+  return String(value ?? '').replace(/\[(.*?)\]\((.*?)\)/g, (_match, label, url) => {
+    const safeLabel = String(label || '').trim();
+    const safeUrl = String(url || '').trim();
+    if (!safeLabel || !safeUrl) return safeLabel || safeUrl;
+    return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${safeLabel}</a>`;
+  });
+}
+
+function collapseWhitespace(value) {
+  return String(value ?? '')
+    .replace(/\u00a0/g, ' ')
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n[ \t]+/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+export function sourceTextFromStoredValue(value) {
+  const raw = String(value ?? '').trim();
+  if (!raw) return '';
+
+  if (!containsHtml(raw)) {
+    return collapseWhitespace(decodeHtmlEntities(raw));
+  }
+
+  let text = raw;
+  text = text.replace(/<a\b[^>]*href\s*=\s*(["'])(.*?)\1[^>]*>([\s\S]*?)<\/a>/gi, (_match, _quote, href, inner) => {
+    const label = collapseWhitespace(htmlFragmentToText(inner));
+    const url = collapseWhitespace(decodeHtmlEntities(href));
+    return label && url ? `[${label}](${url})` : label || url;
+  });
+
+  text = text
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>\s*<p[^>]*>/gi, '\n\n')
+    .replace(/<\/div>\s*<div[^>]*>/gi, '\n')
+    .replace(/<li[^>]*>\s*/gi, '• ')
+    .replace(/<\/li>/gi, '\n')
+    .replace(/<\/?(?:p|div|ul|ol)[^>]*>/gi, '');
+
+  return collapseWhitespace(decodeHtmlEntities(htmlFragmentToText(text)));
+}
+
+export function stripHtml(value) {
+  const source = sourceTextFromStoredValue(value);
+  return source
+    .replace(/\[(.*?)\]\((.*?)\)/g, '$1')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 export function slugify(value) {
@@ -94,7 +170,7 @@ function normalizeLinkArray(value) {
 export function normalizePublication(value) {
   return {
     id: value?.id || null,
-    slug: slugify(value?.slug || value?.titleHtml || ''),
+    slug: slugify(value?.slug || value?.titleHtml || value?.title_html || ''),
     titleHtml: String(value?.titleHtml ?? value?.title_html ?? '').trim(),
     metaLines: normalizeStringArray(value?.metaLines ?? value?.meta_lines),
     badges: normalizeStringArray(value?.badges),
@@ -194,6 +270,35 @@ export async function typesetMath(target = document.body) {
   }
 }
 
+export function renderInlineSource(value, { collapseNewlines = true } = {}) {
+  const raw = String(value ?? '').trim();
+  if (!raw) return '';
+  if (containsHtml(raw)) return raw;
+
+  const normalized = raw.replace(/\r\n?/g, '\n').trim();
+  const escaped = escapeHtml(collapseNewlines ? normalized.replace(/\n+/g, ' ') : normalized);
+  return linkifyMarkdown(escaped);
+}
+
+export function renderBlockSource(value, { blockClass = 'abstract-block' } = {}) {
+  const raw = String(value ?? '').trim();
+  if (!raw) return '';
+  if (containsHtml(raw)) return raw;
+
+  const paragraphs = raw
+    .replace(/\r\n?/g, '\n')
+    .split(/\n\s*\n/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+
+  return paragraphs
+    .map((paragraph) => {
+      const html = renderInlineSource(paragraph, { collapseNewlines: false }).replace(/\n/g, '<br />');
+      return `<div class="${escapeHtml(blockClass)}">${html}</div>`;
+    })
+    .join('');
+}
+
 function appendHtmlLine(parent, className, html) {
   const line = document.createElement('div');
   if (className) line.className = className;
@@ -210,12 +315,12 @@ export function renderPublicationCard(publication, { expandAbstract = false } = 
 
   const title = document.createElement('h3');
   title.className = 'pub-title';
-  title.innerHTML = pub.titleHtml;
+  title.innerHTML = renderInlineSource(pub.titleHtml);
   article.appendChild(title);
 
   const meta = document.createElement('div');
   meta.className = 'pub-meta';
-  pub.metaLines.forEach((line) => appendHtmlLine(meta, '', line));
+  pub.metaLines.forEach((line) => appendHtmlLine(meta, '', renderInlineSource(line)));
   article.appendChild(meta);
 
   if (pub.badges.length > 0) {
@@ -225,7 +330,7 @@ export function renderPublicationCard(publication, { expandAbstract = false } = 
     pub.badges.forEach((badgeHtml) => {
       const badge = document.createElement('span');
       badge.className = 'badge';
-      badge.innerHTML = badgeHtml;
+      badge.innerHTML = renderInlineSource(badgeHtml);
       badges.appendChild(badge);
     });
 
@@ -259,7 +364,7 @@ export function renderPublicationCard(publication, { expandAbstract = false } = 
 
     const body = document.createElement('div');
     body.className = 'abstract-body';
-    body.innerHTML = pub.abstractHtml;
+    body.innerHTML = renderBlockSource(pub.abstractHtml);
 
     let typedOnce = false;
     details.addEventListener('toggle', () => {

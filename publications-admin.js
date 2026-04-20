@@ -15,6 +15,7 @@ import {
   parseLinesTextarea,
   renderPublicationCard,
   slugify,
+  sourceTextFromStoredValue,
   stripHtml,
   typesetMath,
 } from './publications-shared.js';
@@ -178,13 +179,13 @@ function fillForm(publication) {
   state.editingId = publication.id;
   state.slugTouched = true;
   inputs.id.value = publication.id || '';
-  inputs.titleHtml.value = publication.titleHtml || '';
+  inputs.titleHtml.value = sourceTextFromStoredValue(publication.titleHtml);
   inputs.slug.value = publication.slug || '';
   inputs.sortOrder.value = String(publication.sortOrder ?? 0);
-  inputs.metaLines.value = formatLinesTextarea(publication.metaLines);
-  inputs.badges.value = formatLinesTextarea(publication.badges);
+  inputs.metaLines.value = formatLinesTextarea(publication.metaLines.map(sourceTextFromStoredValue));
+  inputs.badges.value = formatLinesTextarea(publication.badges.map(sourceTextFromStoredValue));
   inputs.links.value = formatLinksTextarea(publication.links);
-  inputs.abstractHtml.value = publication.abstractHtml || '';
+  inputs.abstractHtml.value = sourceTextFromStoredValue(publication.abstractHtml);
   inputs.isPublished.checked = Boolean(publication.isPublished);
   editorHeading.textContent = 'Edit publication';
   updatePreviewLink();

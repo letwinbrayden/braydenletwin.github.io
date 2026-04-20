@@ -299,11 +299,13 @@
       padding: 12px 14px;
     }
 
-    .abstract-body p {
+    .abstract-body p,
+    .abstract-body .abstract-block {
       margin: 0 0 0.8em;
     }
 
-    .abstract-body p:last-child {
+    .abstract-body p:last-child,
+    .abstract-body .abstract-block:last-child {
       margin-bottom: 0;
     }
 
@@ -352,7 +354,7 @@
       <div class="kicker">Editor</div>
       <h1 style="margin-bottom: 12px;">Protected publications editor</h1>
       <p class="muted" style="margin: 0;">
-        Sign in with your admin account to create, edit, publish, and reorder publications. HTML and LaTeX are supported in the title, metadata, badges, and abstract.
+        Sign in with your admin account to create, edit, publish, and reorder publications. Enter plain text and LaTeX only—the publication card HTML is generated automatically for you.
       </p>
     </section>
 
@@ -391,7 +393,7 @@
           <div class="admin-panel-heading">
             <div>
               <h3 id="editor-heading">Create publication</h3>
-              <p class="muted small">The public page keeps the current card layout and MathJax rendering. Use <code>$...$</code>, <code>\(...\)</code>, or <code>\[...\]</code> for math. Common AMS, mathtools, physics, mhchem, upgreek, units, and related packages are preloaded, and <code>\le</code>/<code>\ge</code> use the slanted variants.</p>
+              <p class="muted small">The public page keeps the current card layout and MathJax rendering. Just enter plain text and LaTeX here—no HTML tags are needed. Use <code>$...$</code>, <code>\(...\)</code>, or <code>\[...\]</code> for math. Common AMS, mathtools, physics, mhchem, upgreek, units, and related packages are preloaded, and <code>\le</code>/<code>\ge</code> use the slanted variants.</p>
             </div>
             <a class="button secondary" id="preview-link" href="publications.html" target="_blank" rel="noopener noreferrer">Open publications page</a>
           </div>
@@ -400,7 +402,7 @@
             <input type="hidden" id="publication-id" />
 
             <div class="form-row">
-              <label for="publication-title-input">Title HTML / LaTeX</label>
+              <label for="publication-title-input">Title text / LaTeX</label>
               <textarea id="publication-title-input" name="titleHtml" class="editor-textarea compact" required></textarea>
             </div>
 
@@ -423,13 +425,13 @@
             </div>
 
             <div class="form-row">
-              <label for="publication-meta-input">Metadata lines</label>
+              <label for="publication-meta-input">Metadata lines (text / LaTeX)</label>
               <textarea id="publication-meta-input" name="metaLines" class="editor-textarea compact"></textarea>
-              <div class="admin-inline-note">One line per row, for example <span class="code-inline">with &lt;a href="..."&gt;Coauthor&lt;/a&gt;</span>.</div>
+              <div class="admin-inline-note">One line per row. Example: <span class="code-inline">with Colin Tang</span> or <span class="code-inline">with [Mehtaab Sawhney](https://www.math.columbia.edu/~msawhney/)</span>.</div>
             </div>
 
             <div class="form-row">
-              <label for="publication-badges-input">Badges</label>
+              <label for="publication-badges-input">Badges (text / LaTeX)</label>
               <textarea id="publication-badges-input" name="badges" class="editor-textarea compact"></textarea>
               <div class="admin-inline-note">One badge per line, e.g. <span class="code-inline">Accepted</span> or <span class="code-inline">To appear on arXiv</span>.</div>
             </div>
@@ -441,11 +443,11 @@
             </div>
 
             <div class="admin-helper">
-              You can paste HTML and LaTeX exactly as you already write it on the site. The preview below uses the same card layout as the public publications page.
+              Just type plain text and LaTeX. The site generates the publication card HTML automatically, and the preview below uses the same card layout as the public publications page.
             </div>
 
             <div class="form-row">
-              <label for="publication-abstract-input">Abstract HTML / LaTeX</label>
+              <label for="publication-abstract-input">Abstract text / LaTeX</label>
               <textarea id="publication-abstract-input" name="abstractHtml" class="editor-textarea" required></textarea>
             </div>
 
